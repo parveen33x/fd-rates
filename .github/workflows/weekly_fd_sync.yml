@@ -1,0 +1,51 @@
+name: Weekly FD Rate Sync & Audit
+
+on:
+  schedule:
+    # 09:00 AM IST on every Monday (03:30 AM UTC)
+    - cron: '30 3 * * 1'
+  workflow_dispatch: # Allows manual trigger from GitHub UI anytime
+
+permissions:
+  contents: write
+
+jobs:
+  audit-and-sync:
+    name: Crawl Banks, Diff Rates, and Sync Google Sheet
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run FD Rate Sync Pipeline
+        env:
+          GOOGLE_SERVICE_ACCOUNT_KEY: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_KEY }}
+          SPREADSHEET_ID: "1oeSytWn5llasTaoYlqZp7DiPNA5-_xylB-4hPKAFzEY"
+        run: |
+          python src/cloud_sync.py
+
+      - name: Commit and Push Updated Reports (if any)
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action [FD Rate Monitor]"
+          git add data/fd_multi_table_dataset.json data/diff_summary.json fd_rates_comparison_2026.html || true
+          git diff --staged --quiet || git commit -m "Auto-update: Weekly FD rates comparison [skip ci]"
+          git push || true
+
+      - name: Upload HTML Comparison Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: fd-rates-comparison-report
+          path: fd_rates_comparison_2026.html

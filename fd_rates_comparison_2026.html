@@ -1,0 +1,3020 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ET Money vs Official Bank FD Rates (2026) - Separate Tables & Update Dates</title>
+  <style>
+    :root {
+      --primary: #064e3b;
+      --secondary: #1e3a8a;
+      --bg: #f4f6f9;
+      --card: #ffffff;
+      --border: #dce2ec;
+      --hike-bg: #dcfce7;
+      --hike-text: #065f46;
+      --cut-bg: #fee2e2;
+      --cut-text: #991b1b;
+      --new-bg: #fef3c7;
+      --new-text: #92400e;
+    }
+    * { box-sizing: border-box; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
+    body { margin: 0; padding: 20px; background: var(--bg); color: #1e293b; }
+    .header-box {
+      background: linear-gradient(135deg, #064e3b, #0f766e);
+      color: #fff;
+      padding: 20px 24px;
+      border-radius: 10px;
+      margin-bottom: 18px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    .header-box h1 { margin: 0 0 8px 0; font-size: 22px; }
+    .header-box p { margin: 0; font-size: 14px; opacity: 0.94; }
+    .legend {
+      display: flex; gap: 14px; flex-wrap: wrap; margin-top: 12px;
+      font-size: 13px; font-weight: 600;
+    }
+    .badge { padding: 5px 12px; border-radius: 6px; }
+    .badge-hike { background: var(--hike-bg); color: var(--hike-text); }
+    .badge-cut { background: var(--cut-bg); color: var(--cut-text); }
+    .badge-new { background: var(--new-bg); color: var(--new-text); }
+    .tabs {
+      display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 18px;
+      position: sticky; top: 0; background: var(--bg); padding: 10px 0; z-index: 10;
+      border-bottom: 1px solid #cbd5e1;
+    }
+    .tab-btn {
+      padding: 8px 14px; border: 1px solid var(--border); background: #fff;
+      border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600;
+      color: #334155; transition: all 0.15s;
+    }
+    .tab-btn:hover { background: #e2e8f0; }
+    .tab-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+    .bank-card {
+      background: var(--card); border-radius: 10px; padding: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05); margin-bottom: 28px;
+      border: 1px solid var(--border);
+    }
+    .bank-header {
+      background: #064e3b; color: #fff; padding: 14px 18px; border-radius: 8px 8px 0 0;
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;
+    }
+    .bank-header h2 { margin: 0; font-size: 19px; color: #fff; }
+    .bank-meta-bar {
+      background: #f1f5f9; padding: 10px 18px; border-radius: 0 0 8px 8px;
+      border: 1px solid #cbd5e1; border-top: none;
+      font-size: 13px; color: #1e293b; font-weight: 600;
+      display: flex; gap: 24px; flex-wrap: wrap; align-items: center;
+      margin-bottom: 20px;
+    }
+    .bank-meta-bar a { color: #2563eb; text-decoration: none; font-weight: 700; }
+    .bank-meta-bar a:hover { text-decoration: underline; }
+    .table-section {
+      margin-top: 24px; border: 2px solid #94a3b8; border-radius: 8px; overflow: hidden;
+      background: #fff;
+    }
+    .table-banner {
+      background: #1e3a8a; color: #fff; padding: 11px 16px;
+      font-weight: 700; font-size: 15px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;
+    }
+    .table-banner .tbl-tag {
+      background: rgba(255,255,255,0.2); padding: 3px 10px; border-radius: 4px; font-size: 12px;
+    }
+    .table-dates-bar {
+      background: #e0f2fe; color: #0369a1; padding: 10px 16px;
+      font-size: 13px; font-weight: 700; border-bottom: 1px solid #bae6fd;
+      display: flex; flex-wrap: wrap; gap: 18px; justify-content: space-between; align-items: center;
+    }
+    .table-dates-bar .date-pill {
+      background: #fff; color: #0f172a; padding: 5px 12px; border-radius: 5px; border: 1px solid #7dd3fc;
+    }
+    .table-dates-bar a { color: #1d4ed8; font-weight: 700; text-decoration: none; }
+    .table-dates-bar a:hover { text-decoration: underline; }
+    table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+    th {
+      background: #10663f; color: #fff; text-align: left; padding: 10px 12px;
+      font-weight: 600; border-bottom: 2px solid #064e3b;
+    }
+    td { padding: 9px 12px; border-bottom: 1px solid #e2e8f0; border-right: 1px solid #f1f5f9; }
+    td.divider-col { border-right: 2px solid #94a3b8; }
+    tr.row-hike td { background: var(--hike-bg); color: var(--hike-text); font-weight: 600; }
+    tr.row-cut td { background: var(--cut-bg); color: var(--cut-text); font-weight: 600; }
+    tr.row-new td { background: var(--new-bg); color: var(--new-text); font-weight: 600; }
+    tr:hover td { filter: brightness(0.97); }
+  </style>
+</head>
+<body>
+  <div class="header-box">
+    <h1>ET Money vs Official Bank FD Interest Rates (October 2026)</h1>
+    <p>All 20 Banks &amp; NBFCs | Unmerged Separate Tables (Retail &lt; Rs. 3 Cr &amp; Bulk &ge; Rs. 3 Cr) with Individual Update Dates (w.e.f.) &amp; Verified Links</p>
+    <div class="legend">
+      <span class="badge badge-hike">Green = HIGHER ON OFFICIAL (Rate Hike)</span>
+      <span class="badge badge-cut">Red = LOWER ON OFFICIAL (Rate Cut)</span>
+      <span class="badge badge-new">Yellow = NEW SPECIAL SCHEME (Official Portal)</span>
+    </div>
+  </div>
+
+  <div class="tabs" id="tabs"></div>
+  <div id="content"></div>
+
+  <script>
+    const dataset = [
+    {
+        "OfficialUrl":  "https://sbi.bank.in/web/interest-rates/deposit-rates/retail-domestic-term-deposits",
+        "Bank":  "SBI Bank",
+        "Category":  "Public Sector Bank",
+        "ETMoneyUrl":  "https://www.etmoney.com/fixed-deposit/sbi-bank-fd-rates/2",
+        "Tables":  [
+                       {
+                           "OfficialUpdated":  "Official Update Date: w.e.f. 19.10.2026 (Rs. 3 Cr to 25 Cr) | Higher Slabs w.e.f. 27.10.2026",
+                           "TableTitle":  "Table 1: SBI Domestic Bulk Term Deposits (Rs. 3 Crore \u0026 Above) [LATEST UPDATED]",
+                           "OfficialLink":  "https://sbi.bank.in/web/interest-rates/deposit-rates/domestic-bulk-term-deposits",
+                           "Rows":  [
+                                        {
+                                            "ETM_Gen":  "4.50%",
+                                            "Tenure":  "7 days to 14 days (Callable)",
+                                            "Off_Gen":  "4.25%",
+                                            "Off_Sr":  "4.75%",
+                                            "ETM_Sr":  "5.00%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "5.00%",
+                                            "Tenure":  "15 days to 45 days (Callable)",
+                                            "Off_Gen":  "4.75%",
+                                            "Off_Sr":  "5.25%",
+                                            "ETM_Sr":  "5.50%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "5.10%",
+                                            "Tenure":  "46 days to 179 days (Callable)",
+                                            "Off_Gen":  "4.85%",
+                                            "Off_Sr":  "5.35%",
+                                            "ETM_Sr":  "5.60%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "5.60%",
+                                            "Tenure":  "180 days to 210 days (Callable)",
+                                            "Off_Gen":  "5.50%",
+                                            "Off_Sr":  "6.00%",
+                                            "ETM_Sr":  "6.10%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "5.60%",
+                                            "Tenure":  "211 days to less than 1 year (Callable)",
+                                            "Off_Gen":  "5.60%",
+                                            "Off_Sr":  "6.10%",
+                                            "ETM_Sr":  "6.10%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.25%",
+                                            "Tenure":  "1 year to less than 2 years (Callable)",
+                                            "Off_Gen":  "6.25%",
+                                            "Off_Sr":  "6.75%",
+                                            "ETM_Sr":  "6.75%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.15%",
+                                            "Tenure":  "2 years to less than 3 years (Callable)",
+                                            "Off_Gen":  "6.15%",
+                                            "Off_Sr":  "6.65%",
+                                            "ETM_Sr":  "6.65%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.00%",
+                                            "Tenure":  "3 years to less than 5 years (Callable)",
+                                            "Off_Gen":  "6.00%",
+                                            "Off_Sr":  "6.50%",
+                                            "ETM_Sr":  "6.50%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.00%",
+                                            "Tenure":  "5 years and up to 10 years (Callable)",
+                                            "Off_Gen":  "6.00%",
+                                            "Off_Sr":  "6.50%",
+                                            "ETM_Sr":  "6.50%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "--",
+                                            "Tenure":  "46 days to 179 days (Non-Callable)",
+                                            "Off_Gen":  "4.95%",
+                                            "Off_Sr":  "5.45%",
+                                            "ETM_Sr":  "--"
+                                        },
+                                        {
+                                            "ETM_Gen":  "--",
+                                            "Tenure":  "180 days to 210 days (Non-Callable)",
+                                            "Off_Gen":  "5.65%",
+                                            "Off_Sr":  "6.15%",
+                                            "ETM_Sr":  "--"
+                                        },
+                                        {
+                                            "ETM_Gen":  "--",
+                                            "Tenure":  "211 days to less than 1 year (Non-Callable)",
+                                            "Off_Gen":  "5.75%",
+                                            "Off_Sr":  "6.25%",
+                                            "ETM_Sr":  "--"
+                                        },
+                                        {
+                                            "ETM_Gen":  "--",
+                                            "Tenure":  "1 year to less than 2 years (Non-Callable)",
+                                            "Off_Gen":  "6.45%",
+                                            "Off_Sr":  "6.95%",
+                                            "ETM_Sr":  "--"
+                                        },
+                                        {
+                                            "ETM_Gen":  "--",
+                                            "Tenure":  "Higher Slabs: Above 25 Cr up to \u003e1000 Cr (w.e.f. 27.10.2026)",
+                                            "Off_Gen":  "5.40% - 7.50%",
+                                            "Off_Sr":  "No Sr. Benefit",
+                                            "ETM_Sr":  "--"
+                                        }
+                                    ],
+                           "ETMoneyUpdated":  "ET Money Table Heading: 2026 (Rs. 3 Crore \u0026 above)"
+                       },
+                       {
+                           "OfficialUpdated":  "Official Update Date: w.e.f. 15-December-2025 / 2026",
+                           "TableTitle":  "Table 2: SBI Retail Domestic Term Deposits (Below Rs. 3 Crore)",
+                           "OfficialLink":  "https://sbi.bank.in/web/interest-rates/deposit-rates/retail-domestic-term-deposits",
+                           "Rows":  [
+                                        {
+                                            "ETM_Gen":  "3.05%",
+                                            "Tenure":  "7 days to 45 days",
+                                            "Off_Gen":  "3.05%",
+                                            "Off_Sr":  "3.55%",
+                                            "ETM_Sr":  "3.55%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "4.90%",
+                                            "Tenure":  "46 days to 179 days",
+                                            "Off_Gen":  "4.90%",
+                                            "Off_Sr":  "5.40%",
+                                            "ETM_Sr":  "5.40%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "5.65%",
+                                            "Tenure":  "180 days to 210 days",
+                                            "Off_Gen":  "5.65%",
+                                            "Off_Sr":  "6.15%",
+                                            "ETM_Sr":  "6.15%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "5.90%",
+                                            "Tenure":  "211 days to less than 1 year",
+                                            "Off_Gen":  "5.90%",
+                                            "Off_Sr":  "6.40%",
+                                            "ETM_Sr":  "6.40%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.25%",
+                                            "Tenure":  "1 Year to less than 2 years",
+                                            "Off_Gen":  "6.25%",
+                                            "Off_Sr":  "6.75%",
+                                            "ETM_Sr":  "6.75%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.40%",
+                                            "Tenure":  "2 years to less than 3 years",
+                                            "Off_Gen":  "6.40%",
+                                            "Off_Sr":  "6.90%",
+                                            "ETM_Sr":  "6.90%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.30%",
+                                            "Tenure":  "3 years to less than 5 years",
+                                            "Off_Gen":  "6.30%",
+                                            "Off_Sr":  "6.80%",
+                                            "ETM_Sr":  "6.80%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.05%",
+                                            "Tenure":  "5 years and up to 10 years",
+                                            "Off_Gen":  "6.05%",
+                                            "Off_Sr":  "7.05% (SBI We-Care)",
+                                            "ETM_Sr":  "7.05%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.45%",
+                                            "Tenure":  "444 Days (Amrit Vrishti Scheme)",
+                                            "Off_Gen":  "6.45%",
+                                            "Off_Sr":  "6.95%",
+                                            "ETM_Sr":  "6.95%"
+                                        }
+                                    ],
+                           "ETMoneyUpdated":  "ET Money Table Heading: 2026 (Below Rs. 3 crore)"
+                       }
+                   ]
+    },
+    {
+        "OfficialUrl":  "https://www.hdfc.bank.in/fixed-deposit/fd-interest-rate",
+        "Bank":  "HDFC Bank",
+        "Category":  "Private Sector Bank",
+        "ETMoneyUrl":  "https://www.etmoney.com/fixed-deposit/hdfc-bank-fd-rates/4",
+        "Tables":  [
+                       {
+                           "OfficialUpdated":  "Official Update Date: w.e.f. 19-August-2026 (Retail \u003c Rs. 3 Crore)",
+                           "TableTitle":  "Table 1: HDFC Bank Domestic Term Deposit Rates (Below Rs. 3 Crore)",
+                           "OfficialLink":  "https://www.hdfcbank.com/personal/save/deposits/fixed-deposit-interest-rate",
+                           "Rows":  [
+                                        {
+                                            "ETM_Gen":  "2.75%",
+                                            "Tenure":  "7 to 14 days",
+                                            "Off_Gen":  "2.75%",
+                                            "Off_Sr":  "3.25%",
+                                            "ETM_Sr":  "3.25%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "2.75%",
+                                            "Tenure":  "15 to 29 days",
+                                            "Off_Gen":  "2.75%",
+                                            "Off_Sr":  "3.25%",
+                                            "ETM_Sr":  "3.25%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "3.25%",
+                                            "Tenure":  "30 to 45 days",
+                                            "Off_Gen":  "3.25%",
+                                            "Off_Sr":  "3.75%",
+                                            "ETM_Sr":  "3.75%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "4.25%",
+                                            "Tenure":  "46 to 60 days",
+                                            "Off_Gen":  "4.25%",
+                                            "Off_Sr":  "4.75%",
+                                            "ETM_Sr":  "4.75%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "4.25%",
+                                            "Tenure":  "61 to 89 days",
+                                            "Off_Gen":  "4.25%",
+                                            "Off_Sr":  "4.75%",
+                                            "ETM_Sr":  "4.75%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "4.25%",
+                                            "Tenure":  "90 days to 6 months",
+                                            "Off_Gen":  "4.25%",
+                                            "Off_Sr":  "4.75%",
+                                            "ETM_Sr":  "4.75%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "5.50%",
+                                            "Tenure":  "6 months 1 day to 9 months",
+                                            "Off_Gen":  "5.50%",
+                                            "Off_Sr":  "6.00%",
+                                            "ETM_Sr":  "6.00%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "5.75%",
+                                            "Tenure":  "9 months 1 day to \u003c 1 year",
+                                            "Off_Gen":  "5.75%",
+                                            "Off_Sr":  "6.25%",
+                                            "ETM_Sr":  "6.25%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.25%",
+                                            "Tenure":  "1 year to \u003c 15 months",
+                                            "Off_Gen":  "6.25%",
+                                            "Off_Sr":  "6.75%",
+                                            "ETM_Sr":  "6.75%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.35%",
+                                            "Tenure":  "15 months to \u003c 18 months",
+                                            "Off_Gen":  "6.35%",
+                                            "Off_Sr":  "6.85%",
+                                            "ETM_Sr":  "6.85%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.45%",
+                                            "Tenure":  "18 months to \u003c 21 months",
+                                            "Off_Gen":  "6.45%",
+                                            "Off_Sr":  "6.95%",
+                                            "ETM_Sr":  "6.95%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.45%",
+                                            "Tenure":  "21 months to 2 years",
+                                            "Off_Gen":  "6.45%",
+                                            "Off_Sr":  "6.95%",
+                                            "ETM_Sr":  "6.95%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.45%",
+                                            "Tenure":  "2 Years 1 day to \u003c 2 Years 11 Months",
+                                            "Off_Gen":  "6.45%",
+                                            "Off_Sr":  "6.95%",
+                                            "ETM_Sr":  "6.95%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.45%",
+                                            "Tenure":  "2 Years 11 Months to 35 Months",
+                                            "Off_Gen":  "6.45%",
+                                            "Off_Sr":  "6.95%",
+                                            "ETM_Sr":  "6.95%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.45%",
+                                            "Tenure":  "2 Years 11 Months 1 day to 3 Years",
+                                            "Off_Gen":  "6.45%",
+                                            "Off_Sr":  "6.95%",
+                                            "ETM_Sr":  "6.95%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.50%",
+                                            "Tenure":  "3 Years 1 day to \u003c 4 Years 7 Months",
+                                            "Off_Gen":  "6.50%",
+                                            "Off_Sr":  "7.10%",
+                                            "ETM_Sr":  "7.00%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.40%",
+                                            "Tenure":  "4 Years 7 Months to 55 Months",
+                                            "Off_Gen":  "6.40%",
+                                            "Off_Sr":  "6.90%",
+                                            "ETM_Sr":  "6.90%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.40%",
+                                            "Tenure":  "4 Years 7 Months 1 day to 5 Years",
+                                            "Off_Gen":  "6.40%",
+                                            "Off_Sr":  "6.90%",
+                                            "ETM_Sr":  "6.90%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.15%",
+                                            "Tenure":  "5 Years 1 day to 10 Years",
+                                            "Off_Gen":  "6.15%",
+                                            "Off_Sr":  "6.65%",
+                                            "ETM_Sr":  "6.65%"
+                                        }
+                                    ],
+                           "ETMoneyUpdated":  "ET Money Table Heading: 2026 (Below Rs. 3 crore)"
+                       },
+                       {
+                           "OfficialUpdated":  "Official Update Date: w.e.f. 07-March-2026 (Bulk \u003e= 3 Crore to \u003c 5 Crores)",
+                           "TableTitle":  "Table 2: HDFC Bank Domestic Bulk Term Deposit Rates (\u003e= 3 Crore to \u003c 5 Crores)",
+                           "OfficialLink":  "https://www.hdfcbank.com/personal/save/deposits/fixed-deposit-interest-rate",
+                           "Rows":  [
+                                        {
+                                            "ETM_Gen":  "3.50%",
+                                            "Tenure":  "7 to 14 days",
+                                            "Off_Gen":  "3.50%",
+                                            "Off_Sr":  "4.00%",
+                                            "ETM_Sr":  "4.00%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "3.50%",
+                                            "Tenure":  "15 to 29 days",
+                                            "Off_Gen":  "3.50%",
+                                            "Off_Sr":  "4.00%",
+                                            "ETM_Sr":  "4.00%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "4.75%",
+                                            "Tenure":  "30 to 45 days",
+                                            "Off_Gen":  "4.75%",
+                                            "Off_Sr":  "5.25%",
+                                            "ETM_Sr":  "5.25%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "5.00%",
+                                            "Tenure":  "46 to 60 days",
+                                            "Off_Gen":  "5.00%",
+                                            "Off_Sr":  "5.50%",
+                                            "ETM_Sr":  "5.50%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "5.25%",
+                                            "Tenure":  "61 to 89 days",
+                                            "Off_Gen":  "5.25%",
+                                            "Off_Sr":  "5.75%",
+                                            "ETM_Sr":  "5.75%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "5.50%",
+                                            "Tenure":  "90 days to 6 months",
+                                            "Off_Gen":  "5.50%",
+                                            "Off_Sr":  "6.00%",
+                                            "ETM_Sr":  "6.00%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "5.75%",
+                                            "Tenure":  "6 months 1 day to 9 months",
+                                            "Off_Gen":  "5.75%",
+                                            "Off_Sr":  "6.25%",
+                                            "ETM_Sr":  "6.25%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.00%",
+                                            "Tenure":  "9 months 1 day to \u003c 1 year",
+                                            "Off_Gen":  "6.00%",
+                                            "Off_Sr":  "6.50%",
+                                            "ETM_Sr":  "6.50%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.25%",
+                                            "Tenure":  "1 Year to \u003c 15 months",
+                                            "Off_Gen":  "6.25%",
+                                            "Off_Sr":  "6.75%",
+                                            "ETM_Sr":  "6.75%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.25%",
+                                            "Tenure":  "15 months to \u003c 18 months",
+                                            "Off_Gen":  "6.25%",
+                                            "Off_Sr":  "6.75%",
+                                            "ETM_Sr":  "6.75%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.40%",
+                                            "Tenure":  "18 months to \u003c 21 months",
+                                            "Off_Gen":  "6.40%",
+                                            "Off_Sr":  "6.90%",
+                                            "ETM_Sr":  "6.90%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.40%",
+                                            "Tenure":  "21 months to 2 years",
+                                            "Off_Gen":  "6.40%",
+                                            "Off_Sr":  "6.90%",
+                                            "ETM_Sr":  "6.90%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.25%",
+                                            "Tenure":  "2 Years 1 day to 3 years",
+                                            "Off_Gen":  "6.25%",
+                                            "Off_Sr":  "6.75%",
+                                            "ETM_Sr":  "6.75%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.35%",
+                                            "Tenure":  "3 years 1 day to 5 years",
+                                            "Off_Gen":  "6.35%",
+                                            "Off_Sr":  "6.85%",
+                                            "ETM_Sr":  "6.85%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.15%",
+                                            "Tenure":  "5 years 1 day to 10 years",
+                                            "Off_Gen":  "6.15%",
+                                            "Off_Sr":  "6.65%",
+                                            "ETM_Sr":  "6.65%"
+                                        }
+                                    ],
+                           "ETMoneyUpdated":  "ET Money Table Heading: 2026 (\u003e=3 Crore to \u003c 5 Crores)"
+                       }
+                   ]
+    },
+    {
+        "OfficialUrl":  "https://www.icici.bank.in/personal-banking/deposits/fixed-deposit/fd-interest-rates#interest-rates-table-all",
+        "Bank":  "ICICI Bank",
+        "Category":  "Private Sector Bank",
+        "ETMoneyUrl":  "https://www.etmoney.com/fixed-deposit/icici-bank-fd-rates/5",
+        "Tables":  [
+                       {
+                           "OfficialUpdated":  "Official Update Date: w.e.f. from October 27, 2026 (Less than Rs. 3 Cr)",
+                           "TableTitle":  "Table 1: ICICI Bank FD Interest Rates (Below Rs. 3 Crore)",
+                           "OfficialLink":  "https://www.icici.bank.in/personal-banking/deposits/fixed-deposit/fd-interest-rates#interest-rates-table-all",
+                           "Rows":  [
+                                        {
+                                            "ETM_Gen":  "2.75%",
+                                            "Tenure":  "7 days to 45 days",
+                                            "Off_Gen":  "2.75%",
+                                            "Off_Sr":  "3.25%",
+                                            "ETM_Sr":  "3.25%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "4.00%",
+                                            "Tenure":  "46 days to 90 days",
+                                            "Off_Gen":  "4.00%",
+                                            "Off_Sr":  "4.50%",
+                                            "ETM_Sr":  "4.50%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "4.50%",
+                                            "Tenure":  "91 days to 184 days",
+                                            "Off_Gen":  "4.50%",
+                                            "Off_Sr":  "5.00%",
+                                            "ETM_Sr":  "5.00%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "5.50%",
+                                            "Tenure":  "185 days to \u003c 1 Year",
+                                            "Off_Gen":  "5.50%",
+                                            "Off_Sr":  "6.00%",
+                                            "ETM_Sr":  "6.00%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.25%",
+                                            "Tenure":  "1 Year to \u003c 18 Months",
+                                            "Off_Gen":  "6.25%",
+                                            "Off_Sr":  "6.75%",
+                                            "ETM_Sr":  "6.75%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.30%",
+                                            "Tenure":  "18 Months to 2 Years",
+                                            "Off_Gen":  "6.30%",
+                                            "Off_Sr":  "6.80%",
+                                            "ETM_Sr":  "6.80%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.45%",
+                                            "Tenure":  "2 Years 1 Day to 3 Years",
+                                            "Off_Gen":  "6.55%",
+                                            "Off_Sr":  "7.05%",
+                                            "ETM_Sr":  "6.95%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.50%",
+                                            "Tenure":  "3 Years 1 Day to 5 Years",
+                                            "Off_Gen":  "6.60%",
+                                            "Off_Sr":  "7.20%",
+                                            "ETM_Sr":  "7.10%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.50%",
+                                            "Tenure":  "5 Years 1 Day to 10 Years",
+                                            "Off_Gen":  "6.60%",
+                                            "Off_Sr":  "7.10%",
+                                            "ETM_Sr":  "7.00%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.50%",
+                                            "Tenure":  "5Y (Tax Saver FD)",
+                                            "Off_Gen":  "6.60%",
+                                            "Off_Sr":  "7.20%",
+                                            "ETM_Sr":  "7.10%"
+                                        }
+                                    ],
+                           "ETMoneyUpdated":  "ET Money Table Heading: 2026 (Below Rs. 3 crore)"
+                       },
+                       {
+                           "OfficialUpdated":  "Official Update Date: w.e.f. October 12, 2026 (Rs. 3 - \u003c 5 Cr With Premature Withdrawal)",
+                           "TableTitle":  "Table 2: ICICI Bank FD Interest Rates (Rs. 3 Crore to \u003c 5 Crore - With Premature Withdrawal)",
+                           "OfficialLink":  "https://www.icici.bank.in/personal-banking/deposits/fixed-deposit/fd-interest-rates#interest-rates-table-all",
+                           "Rows":  [
+                                        {
+                                            "ETM_Gen":  "3.50%",
+                                            "Tenure":  "7 days to 29 days",
+                                            "Off_Gen":  "3.50%",
+                                            "Off_Sr":  "3.50%",
+                                            "ETM_Sr":  "3.50%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "4.25%",
+                                            "Tenure":  "30 days to 45 days",
+                                            "Off_Gen":  "4.25%",
+                                            "Off_Sr":  "4.25%",
+                                            "ETM_Sr":  "4.25%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "4.50%",
+                                            "Tenure":  "46 days to 60 days",
+                                            "Off_Gen":  "4.50%",
+                                            "Off_Sr":  "4.50%",
+                                            "ETM_Sr":  "4.50%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "4.75%",
+                                            "Tenure":  "61 days to 90 days",
+                                            "Off_Gen":  "4.50%",
+                                            "Off_Sr":  "4.50%",
+                                            "ETM_Sr":  "4.75%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "5.25%",
+                                            "Tenure":  "91 days to 184 days",
+                                            "Off_Gen":  "5.25%",
+                                            "Off_Sr":  "5.25%",
+                                            "ETM_Sr":  "5.25%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "5.50%",
+                                            "Tenure":  "185 days to 270 days",
+                                            "Off_Gen":  "5.50%",
+                                            "Off_Sr":  "6.00%",
+                                            "ETM_Sr":  "6.00%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "5.75%",
+                                            "Tenure":  "271 Days to \u003c 1 Year",
+                                            "Off_Gen":  "5.75%",
+                                            "Off_Sr":  "6.00%",
+                                            "ETM_Sr":  "6.00%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.25%",
+                                            "Tenure":  "1 year to 389 days",
+                                            "Off_Gen":  "6.25%",
+                                            "Off_Sr":  "6.75%",
+                                            "ETM_Sr":  "6.75%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.25%",
+                                            "Tenure":  "390 days to \u003c 15 Months",
+                                            "Off_Gen":  "6.25%",
+                                            "Off_Sr":  "6.75%",
+                                            "ETM_Sr":  "6.75%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.25%",
+                                            "Tenure":  "15 Months to \u003c 18 Months",
+                                            "Off_Gen":  "6.25%",
+                                            "Off_Sr":  "6.75%",
+                                            "ETM_Sr":  "6.75%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.30%",
+                                            "Tenure":  "18 months to 2 years",
+                                            "Off_Gen":  "6.30%",
+                                            "Off_Sr":  "6.80%",
+                                            "ETM_Sr":  "6.80%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.45%",
+                                            "Tenure":  "2 Years 1 Day to 3 Years",
+                                            "Off_Gen":  "6.45%",
+                                            "Off_Sr":  "6.95%",
+                                            "ETM_Sr":  "6.95%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.50%",
+                                            "Tenure":  "3 years 1 day to 5 years",
+                                            "Off_Gen":  "6.50%",
+                                            "Off_Sr":  "7.10%",
+                                            "ETM_Sr":  "7.10%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.50%",
+                                            "Tenure":  "5 Years 1 Day to 10 Years",
+                                            "Off_Gen":  "6.50%",
+                                            "Off_Sr":  "7.00%",
+                                            "ETM_Sr":  "7.00%"
+                                        }
+                                    ],
+                           "ETMoneyUpdated":  "ET Money Table Heading: 2026 (Rs. 3 - 5 crore With Premature Withdrawal)"
+                       }
+                   ]
+    },
+    {
+        "OfficialUrl":  "https://www.axis.bank.in/docs/default-source/default-document-library/interest-rates/domestic-fixed-deposit-interest-rates-less-than-3-crores-08-october-2026.pdf?sfvrsn=15a73678_1",
+        "Bank":  "Axis Bank",
+        "Category":  "Private Sector Bank",
+        "ETMoneyUrl":  "https://www.etmoney.com/fixed-deposit/axis-bank-fd-rates/3",
+        "Tables":  [
+                       {
+                           "OfficialUpdated":  "Official PDF Circular: 08-October-2026 (W.e.f. 01-July-2026, \u003c Rs. 3 Cr)",
+                           "TableTitle":  "Table 1: Axis Bank Domestic FD Interest Rates (Less than Rs. 3 Cr)",
+                           "OfficialLink":  "https://www.axis.bank.in/docs/default-source/default-document-library/interest-rates/domestic-fixed-deposit-interest-rates-less-than-3-crores-08-october-2026.pdf?sfvrsn=15a73678_1",
+                           "Rows":  [
+                                        {
+                                            "ETM_Gen":  "3.00%",
+                                            "Tenure":  "7 to 14 days",
+                                            "Off_Gen":  "3.00%",
+                                            "Off_Sr":  "3.50%",
+                                            "ETM_Sr":  "3.50%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "3.00%",
+                                            "Tenure":  "15 to 29 days",
+                                            "Off_Gen":  "3.00%",
+                                            "Off_Sr":  "3.50%",
+                                            "ETM_Sr":  "3.50%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "3.25%",
+                                            "Tenure":  "30 to 45 days",
+                                            "Off_Gen":  "3.25%",
+                                            "Off_Sr":  "3.75%",
+                                            "ETM_Sr":  "3.75%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "4.00%",
+                                            "Tenure":  "46 to 60 days",
+                                            "Off_Gen":  "4.00%",
+                                            "Off_Sr":  "4.50%",
+                                            "ETM_Sr":  "4.50%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "4.75%",
+                                            "Tenure":  "61 days to 87 days",
+                                            "Off_Gen":  "4.75%",
+                                            "Off_Sr":  "5.25%",
+                                            "ETM_Sr":  "5.25%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "5.00%",
+                                            "Tenure":  "88 days to 3 months 24 days",
+                                            "Off_Gen":  "5.00%",
+                                            "Off_Sr":  "5.50%",
+                                            "ETM_Sr":  "5.50%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "5.00%",
+                                            "Tenure":  "3 months 25 days to \u003c 4 months",
+                                            "Off_Gen":  "5.00%",
+                                            "Off_Sr":  "5.50%",
+                                            "ETM_Sr":  "5.50%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "5.00%",
+                                            "Tenure":  "4 months to \u003c 6 months",
+                                            "Off_Gen":  "5.00%",
+                                            "Off_Sr":  "5.50%",
+                                            "ETM_Sr":  "5.50%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "5.50%",
+                                            "Tenure":  "6 months to \u003c 9 months",
+                                            "Off_Gen":  "5.50%",
+                                            "Off_Sr":  "6.00%",
+                                            "ETM_Sr":  "6.00%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "5.75%",
+                                            "Tenure":  "9 months to \u003c 1 year",
+                                            "Off_Gen":  "5.75%",
+                                            "Off_Sr":  "6.25%",
+                                            "ETM_Sr":  "6.25%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.25%",
+                                            "Tenure":  "1 year to 1 year 10 days",
+                                            "Off_Gen":  "6.25%",
+                                            "Off_Sr":  "6.75%",
+                                            "ETM_Sr":  "6.75%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.25%",
+                                            "Tenure":  "1 year 11 days to \u003c 13 months",
+                                            "Off_Gen":  "6.25%",
+                                            "Off_Sr":  "6.75%",
+                                            "ETM_Sr":  "6.75%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.25%",
+                                            "Tenure":  "13 months to \u003c 15 months",
+                                            "Off_Gen":  "6.25%",
+                                            "Off_Sr":  "6.75%",
+                                            "ETM_Sr":  "6.75%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.45%",
+                                            "Tenure":  "15 months to \u003c 18 months",
+                                            "Off_Gen":  "6.45%",
+                                            "Off_Sr":  "6.95%",
+                                            "ETM_Sr":  "6.95%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.45%",
+                                            "Tenure":  "18 Months to \u003c 2 years",
+                                            "Off_Gen":  "6.50%",
+                                            "Off_Sr":  "7.00%",
+                                            "ETM_Sr":  "6.95%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.45%",
+                                            "Tenure":  "2 years to \u003c 3 years",
+                                            "Off_Gen":  "6.50%",
+                                            "Off_Sr":  "7.00%",
+                                            "ETM_Sr":  "6.95%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.45%",
+                                            "Tenure":  "3 years to \u003c 5 years",
+                                            "Off_Gen":  "6.50%",
+                                            "Off_Sr":  "7.00%",
+                                            "ETM_Sr":  "6.95%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.45%",
+                                            "Tenure":  "5 years to 10 years",
+                                            "Off_Gen":  "6.50%",
+                                            "Off_Sr":  "7.25%",
+                                            "ETM_Sr":  "7.20%"
+                                        }
+                                    ],
+                           "ETMoneyUpdated":  "ET Money Table Heading: 2026 (Less than Rs. 3 Cr)"
+                       },
+                       {
+                           "OfficialUpdated":  "Official Update Date: October 2026 (Bulk Rs. 3 Cr to \u003c Rs. 5 Cr)",
+                           "TableTitle":  "Table 2: Revised Axis Bank FD Interest Rates (Rs. 3 Cr to \u003c Rs. 5 Cr)",
+                           "OfficialLink":  "https://www.axis.bank.in/docs/default-source/default-document-library/interest-rates/domestic-fixed-deposit-interest-rates-less-than-3-crores-08-october-2026.pdf?sfvrsn=15a73678_1",
+                           "Rows":  [
+                                        {
+                                            "ETM_Gen":  "3.50%",
+                                            "Tenure":  "7 to 14 days",
+                                            "Off_Gen":  "3.50%",
+                                            "Off_Sr":  "3.50%",
+                                            "ETM_Sr":  "4.00%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "3.50%",
+                                            "Tenure":  "15 to 29 days",
+                                            "Off_Gen":  "3.50%",
+                                            "Off_Sr":  "3.50%",
+                                            "ETM_Sr":  "4.00%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "4.75%",
+                                            "Tenure":  "30 to 45 days",
+                                            "Off_Gen":  "4.15%",
+                                            "Off_Sr":  "4.15%",
+                                            "ETM_Sr":  "5.25%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "5.00%",
+                                            "Tenure":  "46 to 60 days",
+                                            "Off_Gen":  "4.40%",
+                                            "Off_Sr":  "4.40%",
+                                            "ETM_Sr":  "5.50%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "5.25%",
+                                            "Tenure":  "61 days to 87 days",
+                                            "Off_Gen":  "4.40%",
+                                            "Off_Sr":  "4.40%",
+                                            "ETM_Sr":  "5.75%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "5.50%",
+                                            "Tenure":  "88 days to 3 months 24 days",
+                                            "Off_Gen":  "5.65%",
+                                            "Off_Sr":  "5.65%",
+                                            "ETM_Sr":  "6.00%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "4.25%",
+                                            "Tenure":  "3 months 25 days to \u003c 4 months",
+                                            "Off_Gen":  "5.65%",
+                                            "Off_Sr":  "5.65%",
+                                            "ETM_Sr":  "4.75%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "5.50%",
+                                            "Tenure":  "4 months to \u003c 6 months",
+                                            "Off_Gen":  "5.65%",
+                                            "Off_Sr":  "5.65%",
+                                            "ETM_Sr":  "6.00%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "5.75%",
+                                            "Tenure":  "6 months to \u003c 9 months",
+                                            "Off_Gen":  "5.90%",
+                                            "Off_Sr":  "5.90%",
+                                            "ETM_Sr":  "6.25%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.00%",
+                                            "Tenure":  "9 months to \u003c 1 year",
+                                            "Off_Gen":  "6.00%",
+                                            "Off_Sr":  "6.00%",
+                                            "ETM_Sr":  "6.50%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.25%",
+                                            "Tenure":  "1 year to 1 year 10 days",
+                                            "Off_Gen":  "6.15%",
+                                            "Off_Sr":  "6.15%",
+                                            "ETM_Sr":  "6.75%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.25%",
+                                            "Tenure":  "1 year 11 days to \u003c 13 months",
+                                            "Off_Gen":  "6.15%",
+                                            "Off_Sr":  "6.15%",
+                                            "ETM_Sr":  "6.75%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.25%",
+                                            "Tenure":  "13 months to \u003c 15 months",
+                                            "Off_Gen":  "6.15%",
+                                            "Off_Sr":  "6.15%",
+                                            "ETM_Sr":  "6.75%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.50%",
+                                            "Tenure":  "15 months to \u003c 18 months",
+                                            "Off_Gen":  "6.15%",
+                                            "Off_Sr":  "6.15%",
+                                            "ETM_Sr":  "7.00%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.60%",
+                                            "Tenure":  "18 Months to \u003c 2 years",
+                                            "Off_Gen":  "6.20%",
+                                            "Off_Sr":  "6.20%",
+                                            "ETM_Sr":  "7.10%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.60%",
+                                            "Tenure":  "2 years to \u003c 3 years",
+                                            "Off_Gen":  "6.15%",
+                                            "Off_Sr":  "6.15%",
+                                            "ETM_Sr":  "7.10%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.60%",
+                                            "Tenure":  "3 years to \u003c 5 years",
+                                            "Off_Gen":  "6.25%",
+                                            "Off_Sr":  "6.25%",
+                                            "ETM_Sr":  "7.10%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.60%",
+                                            "Tenure":  "5 years to 10 years",
+                                            "Off_Gen":  "6.05%",
+                                            "Off_Sr":  "6.05%",
+                                            "ETM_Sr":  "7.35%"
+                                        }
+                                    ],
+                           "ETMoneyUpdated":  "ET Money Table Heading: Aug 2026 (Rs. 3 Cr to \u003c Rs. 5 Cr)"
+                       }
+                   ]
+    },
+    {
+        "OfficialUrl":  "https://bankofbaroda.bank.in/interest-rate-and-service-charges/deposits-interest-rates/fixed-deposits-callable-and-non-callable-upto-ten-crores",
+        "Bank":  "Bank of Baroda",
+        "Category":  "Public Sector Bank",
+        "ETMoneyUrl":  "https://www.etmoney.com/fixed-deposit/bank-of-baroda-fd-rates/6",
+        "Tables":  [
+                       {
+                           "OfficialUpdated":  "Official Update Date: w.e.f. 12-June-2026 (Retail \u003c Rs. 3 Crore)",
+                           "TableTitle":  "Table 1: Current Bank of Baroda FD Interest Rates (Below Rs. 3 Crore)",
+                           "OfficialLink":  "https://bankofbaroda.bank.in/interest-rate-and-service-charges/deposits-interest-rates/fixed-deposits-callable-and-non-callable-upto-ten-crores",
+                           "Rows":  [
+                                        {
+                                            "ETM_Gen":  "3.50%",
+                                            "Tenure":  "7 days to 14 days",
+                                            "Off_Gen":  "3.50%",
+                                            "Off_Sr":  "4.00%",
+                                            "ETM_Sr":  "4.00%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "3.50%",
+                                            "Tenure":  "15 days to 45 days",
+                                            "Off_Gen":  "3.50%",
+                                            "Off_Sr":  "4.00%",
+                                            "ETM_Sr":  "4.00%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "5.00%",
+                                            "Tenure":  "46 days to 90 days",
+                                            "Off_Gen":  "5.00%",
+                                            "Off_Sr":  "5.50%",
+                                            "ETM_Sr":  "5.50%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "5.00%",
+                                            "Tenure":  "91 days to 180 days",
+                                            "Off_Gen":  "5.00%",
+                                            "Off_Sr":  "5.50%",
+                                            "ETM_Sr":  "5.50%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "5.50%",
+                                            "Tenure":  "181 days to 210 days",
+                                            "Off_Gen":  "5.50%",
+                                            "Off_Sr":  "6.00%",
+                                            "ETM_Sr":  "6.00%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "5.75%",
+                                            "Tenure":  "211 days to 270 days",
+                                            "Off_Gen":  "5.75%",
+                                            "Off_Sr":  "6.25%",
+                                            "ETM_Sr":  "6.25%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.00%",
+                                            "Tenure":  "271 days \u0026 above and \u003c 1 year",
+                                            "Off_Gen":  "6.00%",
+                                            "Off_Sr":  "6.50%",
+                                            "ETM_Sr":  "6.50%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.10%",
+                                            "Tenure":  "1 year",
+                                            "Off_Gen":  "6.25%",
+                                            "Off_Sr":  "6.75%",
+                                            "ETM_Sr":  "6.60%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.25%",
+                                            "Tenure":  "Above 1 year to 400 days",
+                                            "Off_Gen":  "6.25%",
+                                            "Off_Sr":  "6.75%",
+                                            "ETM_Sr":  "6.75%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.25%",
+                                            "Tenure":  "Above 400 days and upto 2 Years",
+                                            "Off_Gen":  "6.25%",
+                                            "Off_Sr":  "6.75%",
+                                            "ETM_Sr":  "6.75%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.25%",
+                                            "Tenure":  "Above 2 Years and upto 3 Years",
+                                            "Off_Gen":  "6.25%",
+                                            "Off_Sr":  "6.75%",
+                                            "ETM_Sr":  "6.75%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.30%",
+                                            "Tenure":  "Above 3 Years and upto 5 Years",
+                                            "Off_Gen":  "6.50%",
+                                            "Off_Sr":  "7.15%",
+                                            "ETM_Sr":  "6.90%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.00%",
+                                            "Tenure":  "Above 5 Years and upto 10 Years",
+                                            "Off_Gen":  "6.50%",
+                                            "Off_Sr":  "7.25%",
+                                            "ETM_Sr":  "7.00%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "5.50%",
+                                            "Tenure":  "Above 10 years (MACAD only)",
+                                            "Off_Gen":  "5.50%",
+                                            "Off_Sr":  "6.00%",
+                                            "ETM_Sr":  "6.00%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.45%",
+                                            "Tenure":  "bob Square Drive Deposit Scheme (444 Days)",
+                                            "Off_Gen":  "6.45%",
+                                            "Off_Sr":  "6.95%",
+                                            "ETM_Sr":  "6.95%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "--",
+                                            "Tenure":  "BoB Golden Goal (555 Days Special)",
+                                            "Off_Gen":  "6.75%",
+                                            "Off_Sr":  "7.25%",
+                                            "ETM_Sr":  "--"
+                                        }
+                                    ],
+                           "ETMoneyUpdated":  "ET Money Table Heading: 2026 (Below Rs. 3 crore)"
+                       },
+                       {
+                           "OfficialUpdated":  "Official Update Date: w.e.f. 27.10.2026 (Bulk Callable Rs. 3 Cr to Rs. 10 Cr)",
+                           "TableTitle":  "Table 2: Bank of Baroda Bulk FD Interest Rates (Rs. 3 Crores up to Rs. 4 Crores)",
+                           "OfficialLink":  "https://bankofbaroda.bank.in/interest-rate-and-service-charges/deposits-interest-rates/fixed-deposits-callable-and-non-callable-upto-ten-crores",
+                           "Rows":  [
+                                        {
+                                            "ETM_Gen":  "3.50%",
+                                            "Tenure":  "7 days to 14 days",
+                                            "Off_Gen":  "3.50%",
+                                            "Off_Sr":  "3.50%",
+                                            "ETM_Sr":  "3.50%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "3.75%",
+                                            "Tenure":  "15 days to 45 days",
+                                            "Off_Gen":  "3.75%",
+                                            "Off_Sr":  "3.75%",
+                                            "ETM_Sr":  "3.75%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "4.25%",
+                                            "Tenure":  "46 days to 90 days",
+                                            "Off_Gen":  "4.25%",
+                                            "Off_Sr":  "4.25%",
+                                            "ETM_Sr":  "4.25%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "4.75%",
+                                            "Tenure":  "91 days to 180 days",
+                                            "Off_Gen":  "4.75%",
+                                            "Off_Sr":  "4.75%",
+                                            "ETM_Sr":  "4.75%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "5.50%",
+                                            "Tenure":  "181 days to 210 days",
+                                            "Off_Gen":  "5.50%",
+                                            "Off_Sr":  "5.50%",
+                                            "ETM_Sr":  "5.50%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "5.50%",
+                                            "Tenure":  "211 days to 270 days",
+                                            "Off_Gen":  "5.75%",
+                                            "Off_Sr":  "5.75%",
+                                            "ETM_Sr":  "5.50%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "5.75%",
+                                            "Tenure":  "271 days to less than 1 year",
+                                            "Off_Gen":  "6.00%",
+                                            "Off_Sr":  "6.00%",
+                                            "ETM_Sr":  "5.75%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.10%",
+                                            "Tenure":  "1 Year",
+                                            "Off_Gen":  "6.25%",
+                                            "Off_Sr":  "6.25%",
+                                            "ETM_Sr":  "6.10%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.00%",
+                                            "Tenure":  "Above 1 Year to 15 Months",
+                                            "Off_Gen":  "6.25%",
+                                            "Off_Sr":  "6.25%",
+                                            "ETM_Sr":  "6.00%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.00%",
+                                            "Tenure":  "Above 15 Months to 2 Years",
+                                            "Off_Gen":  "6.25%",
+                                            "Off_Sr":  "6.25%",
+                                            "ETM_Sr":  "6.00%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "5.50%",
+                                            "Tenure":  "Above 2 Years to 3 Years",
+                                            "Off_Gen":  "6.25%",
+                                            "Off_Sr":  "6.25%",
+                                            "ETM_Sr":  "5.50%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "5.00%",
+                                            "Tenure":  "Above 3 Years to 5 Years",
+                                            "Off_Gen":  "6.30%",
+                                            "Off_Sr":  "6.30%",
+                                            "ETM_Sr":  "5.00%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "4.50%",
+                                            "Tenure":  "Above 5 Years and upto 10 Years",
+                                            "Off_Gen":  "6.00%",
+                                            "Off_Sr":  "6.00%",
+                                            "ETM_Sr":  "4.50%"
+                                        }
+                                    ],
+                           "ETMoneyUpdated":  "ET Money Table Heading: 2026 (Rs. 3 Crores up to Rs. 4 Crores)"
+                       }
+                   ]
+    },
+    {
+        "OfficialUrl":  "https://pnb.bank.in/Interest-Rates-Deposit.html",
+        "Bank":  "Punjab National Bank",
+        "Category":  "Public Sector Bank",
+        "ETMoneyUrl":  "https://www.etmoney.com/fixed-deposit/punjab-national-bank-fd-rates/12",
+        "Tables":  [
+                       {
+                           "OfficialUpdated":  "Official Update Date: w.e.f. 01.06.2026 (Single Deposit \u003c Rs. 3 Crore)",
+                           "TableTitle":  "Table 1: Punjab National Bank FD Interest Rates (Below Rs. 3 Crore)",
+                           "OfficialLink":  "https://pnb.bank.in/Interest-Rates-Deposit.html",
+                           "Rows":  [
+                                        {
+                                            "ETM_Gen":  "3.00%",
+                                            "Tenure":  "7 to 14 days",
+                                            "Off_Gen":  "3.00%",
+                                            "Off_Sr":  "3.50%",
+                                            "ETM_Sr":  "3.50%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "3.00%",
+                                            "Tenure":  "15 to 29 days",
+                                            "Off_Gen":  "3.00%",
+                                            "Off_Sr":  "3.50%",
+                                            "ETM_Sr":  "3.50%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "3.00%",
+                                            "Tenure":  "30 to 45 days",
+                                            "Off_Gen":  "3.00%",
+                                            "Off_Sr":  "3.50%",
+                                            "ETM_Sr":  "3.50%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "4.50%",
+                                            "Tenure":  "46 to 60 days",
+                                            "Off_Gen":  "4.50%",
+                                            "Off_Sr":  "5.00%",
+                                            "ETM_Sr":  "5.00%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "4.50%",
+                                            "Tenure":  "61 to 90 days",
+                                            "Off_Gen":  "4.50%",
+                                            "Off_Sr":  "5.00%",
+                                            "ETM_Sr":  "5.00%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "4.90%",
+                                            "Tenure":  "91 to 179 days",
+                                            "Off_Gen":  "4.90%",
+                                            "Off_Sr":  "5.40%",
+                                            "ETM_Sr":  "5.40%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "5.60%",
+                                            "Tenure":  "180 days to 270 Days",
+                                            "Off_Gen":  "5.60%",
+                                            "Off_Sr":  "6.10%",
+                                            "ETM_Sr":  "6.10%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "5.60%",
+                                            "Tenure":  "271 Days to 302 Days",
+                                            "Off_Gen":  "5.60%",
+                                            "Off_Sr":  "6.10%",
+                                            "ETM_Sr":  "6.10%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "5.50%",
+                                            "Tenure":  "303 days",
+                                            "Off_Gen":  "5.55%",
+                                            "Off_Sr":  "6.05%",
+                                            "ETM_Sr":  "6.00%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "5.60%",
+                                            "Tenure":  "304 Days to \u003c 1 Year",
+                                            "Off_Gen":  "5.60%",
+                                            "Off_Sr":  "6.10%",
+                                            "ETM_Sr":  "6.10%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.10%",
+                                            "Tenure":  "1 Year",
+                                            "Off_Gen":  "6.10%",
+                                            "Off_Sr":  "6.60%",
+                                            "ETM_Sr":  "6.60%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.30%",
+                                            "Tenure":  "\u003e 1 Year to 389 days",
+                                            "Off_Gen":  "6.30%",
+                                            "Off_Sr":  "6.80%",
+                                            "ETM_Sr":  "6.80%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.40%",
+                                            "Tenure":  "390 Days",
+                                            "Off_Gen":  "6.40%",
+                                            "Off_Sr":  "6.90%",
+                                            "ETM_Sr":  "6.90%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.30%",
+                                            "Tenure":  "391 Days to 505 Days",
+                                            "Off_Gen":  "6.30%",
+                                            "Off_Sr":  "6.80%",
+                                            "ETM_Sr":  "6.80%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.30%",
+                                            "Tenure":  "506 Days",
+                                            "Off_Gen":  "6.30%",
+                                            "Off_Sr":  "6.80%",
+                                            "ETM_Sr":  "6.80%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.30%",
+                                            "Tenure":  "507 Days to 2 years",
+                                            "Off_Gen":  "6.30%",
+                                            "Off_Sr":  "6.80%",
+                                            "ETM_Sr":  "6.80%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.30%",
+                                            "Tenure":  "\u003e 2 years to 3 years",
+                                            "Off_Gen":  "6.30%",
+                                            "Off_Sr":  "6.80%",
+                                            "ETM_Sr":  "6.80%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.10%",
+                                            "Tenure":  "\u003e 3 years to 1203 days",
+                                            "Off_Gen":  "6.10%",
+                                            "Off_Sr":  "6.60%",
+                                            "ETM_Sr":  "6.60%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.05%",
+                                            "Tenure":  "1204 days",
+                                            "Off_Gen":  "6.05%",
+                                            "Off_Sr":  "6.55%",
+                                            "ETM_Sr":  "6.55%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.10%",
+                                            "Tenure":  "1205 days to 5 years",
+                                            "Off_Gen":  "6.10%",
+                                            "Off_Sr":  "6.60%",
+                                            "ETM_Sr":  "6.60%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.00%",
+                                            "Tenure":  "\u003e 5 years to 1894 days",
+                                            "Off_Gen":  "6.10%",
+                                            "Off_Sr":  "6.90%",
+                                            "ETM_Sr":  "6.80%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.00%",
+                                            "Tenure":  "1895 days",
+                                            "Off_Gen":  "6.10%",
+                                            "Off_Sr":  "6.90%",
+                                            "ETM_Sr":  "6.80%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.00%",
+                                            "Tenure":  "1896 days to 10 years",
+                                            "Off_Gen":  "6.10%",
+                                            "Off_Sr":  "6.90%",
+                                            "ETM_Sr":  "6.80%"
+                                        }
+                                    ],
+                           "ETMoneyUpdated":  "ET Money Table Heading: 2026 (Below Rs. 3 crore)"
+                       },
+                       {
+                           "OfficialUpdated":  "Official Update Date: w.e.f. 14.03.2026 (Single Bulk Deposit Rs. 3 Cr to Rs. 10 Cr)",
+                           "TableTitle":  "Table 2: Punjab National Bank Bulk FD Interest Rates (Rs. 3 Crore to Rs. 10 Crore)",
+                           "OfficialLink":  "https://pnb.bank.in/Interest-Rates-Deposit.html",
+                           "Rows":  [
+                                        {
+                                            "ETM_Gen":  "4.50%",
+                                            "Tenure":  "7 days to 14 days",
+                                            "Off_Gen":  "4.50%",
+                                            "Off_Sr":  "4.50%",
+                                            "ETM_Sr":  "4.50%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "5.00%",
+                                            "Tenure":  "15 days to 29 days",
+                                            "Off_Gen":  "5.00%",
+                                            "Off_Sr":  "5.00%",
+                                            "ETM_Sr":  "5.00%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "5.00%",
+                                            "Tenure":  "30 days to 45 days",
+                                            "Off_Gen":  "5.00%",
+                                            "Off_Sr":  "5.00%",
+                                            "ETM_Sr":  "5.00%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "5.00%",
+                                            "Tenure":  "46 days to 60 days",
+                                            "Off_Gen":  "5.00%",
+                                            "Off_Sr":  "5.00%",
+                                            "ETM_Sr":  "5.00%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "5.00%",
+                                            "Tenure":  "61 days to 90 days",
+                                            "Off_Gen":  "5.00%",
+                                            "Off_Sr":  "5.00%",
+                                            "ETM_Sr":  "5.00%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "5.00%",
+                                            "Tenure":  "91 to 179 days",
+                                            "Off_Gen":  "5.00%",
+                                            "Off_Sr":  "5.00%",
+                                            "ETM_Sr":  "5.00%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "5.80%",
+                                            "Tenure":  "180 days to 270 Days",
+                                            "Off_Gen":  "5.80%",
+                                            "Off_Sr":  "5.80%",
+                                            "ETM_Sr":  "5.80%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.00%",
+                                            "Tenure":  "271 days to 302 Days",
+                                            "Off_Gen":  "6.00%",
+                                            "Off_Sr":  "6.00%",
+                                            "ETM_Sr":  "6.00%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "5.95%",
+                                            "Tenure":  "303 days",
+                                            "Off_Gen":  "5.95%",
+                                            "Off_Sr":  "5.95%",
+                                            "ETM_Sr":  "5.95%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.00%",
+                                            "Tenure":  "304 Days to \u003c 1 year",
+                                            "Off_Gen":  "6.00%",
+                                            "Off_Sr":  "6.00%",
+                                            "ETM_Sr":  "6.00%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.10%",
+                                            "Tenure":  "1 year",
+                                            "Off_Gen":  "6.10%",
+                                            "Off_Sr":  "6.10%",
+                                            "ETM_Sr":  "6.10%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.15%",
+                                            "Tenure":  "\u003e 1 Year to 389 Days",
+                                            "Off_Gen":  "6.15%",
+                                            "Off_Sr":  "6.15%",
+                                            "ETM_Sr":  "6.15%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.20%",
+                                            "Tenure":  "390 days",
+                                            "Off_Gen":  "6.20%",
+                                            "Off_Sr":  "6.20%",
+                                            "ETM_Sr":  "6.20%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.15%",
+                                            "Tenure":  "391 Days to 505 Days",
+                                            "Off_Gen":  "6.15%",
+                                            "Off_Sr":  "6.15%",
+                                            "ETM_Sr":  "6.15%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.15%",
+                                            "Tenure":  "506 days",
+                                            "Off_Gen":  "6.15%",
+                                            "Off_Sr":  "6.15%",
+                                            "ETM_Sr":  "6.15%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.15%",
+                                            "Tenure":  "507 days to 2 years",
+                                            "Off_Gen":  "6.15%",
+                                            "Off_Sr":  "6.15%",
+                                            "ETM_Sr":  "6.15%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.05%",
+                                            "Tenure":  "Above 2 years \u0026 upto 3 years",
+                                            "Off_Gen":  "6.05%",
+                                            "Off_Sr":  "6.05%",
+                                            "ETM_Sr":  "6.05%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "5.35%",
+                                            "Tenure":  "3 years to 1203 days",
+                                            "Off_Gen":  "5.35%",
+                                            "Off_Sr":  "5.35%",
+                                            "ETM_Sr":  "5.35%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "5.30%",
+                                            "Tenure":  "1204 days",
+                                            "Off_Gen":  "5.30%",
+                                            "Off_Sr":  "5.30%",
+                                            "ETM_Sr":  "5.30%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "5.35%",
+                                            "Tenure":  "1205 days to 5 years",
+                                            "Off_Gen":  "5.35%",
+                                            "Off_Sr":  "5.35%",
+                                            "ETM_Sr":  "5.35%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "5.60%",
+                                            "Tenure":  "\u003e 5 years to 1894 days",
+                                            "Off_Gen":  "5.60%",
+                                            "Off_Sr":  "5.60%",
+                                            "ETM_Sr":  "5.60%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "5.60%",
+                                            "Tenure":  "1895 days",
+                                            "Off_Gen":  "5.60%",
+                                            "Off_Sr":  "5.60%",
+                                            "ETM_Sr":  "5.60%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "5.60%",
+                                            "Tenure":  "1896 days to 10 years",
+                                            "Off_Gen":  "5.60%",
+                                            "Off_Sr":  "5.60%",
+                                            "ETM_Sr":  "5.60%"
+                                        }
+                                    ],
+                           "ETMoneyUpdated":  "ET Money Table Heading: 2026 (Above Rs. 3 crore)"
+                       }
+                   ]
+    },
+    {
+        "OfficialUrl":  "https://www.kotak.bank.in/en/personal-banking/deposits/fixed-deposit/fixed-deposit-interest-rate.html",
+        "Bank":  "Kotak Mahindra Bank",
+        "Category":  "Private Sector Bank",
+        "ETMoneyUrl":  "https://www.etmoney.com/fixed-deposit/kotak-mahindra-bank-fd-rates/9",
+        "Tables":  [
+                       {
+                           "OfficialUpdated":  "Official Update Date: w.e.f. 23-September-2026 (\u003c Rs. 3 Crore)",
+                           "TableTitle":  "Table 1: Latest Kotak Mahindra Bank FD Interest Rates (Below Rs. 3 Crore)",
+                           "OfficialLink":  "https://www.kotak.bank.in/en/personal-banking/deposits/fixed-deposit/fixed-deposit-interest-rate.html",
+                           "Rows":  [
+                                        {
+                                            "ETM_Gen":  "2.75%",
+                                            "Tenure":  "7 to 14 Days",
+                                            "Off_Gen":  "2.75%",
+                                            "Off_Sr":  "3.25%",
+                                            "ETM_Sr":  "3.25%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "2.75%",
+                                            "Tenure":  "15 to 30 Days",
+                                            "Off_Gen":  "2.75%",
+                                            "Off_Sr":  "3.25%",
+                                            "ETM_Sr":  "3.25%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "3.00%",
+                                            "Tenure":  "31 to 45 Days",
+                                            "Off_Gen":  "3.00%",
+                                            "Off_Sr":  "3.50%",
+                                            "ETM_Sr":  "3.50%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "3.50%",
+                                            "Tenure":  "46 to 90 Days",
+                                            "Off_Gen":  "3.50%",
+                                            "Off_Sr":  "4.00%",
+                                            "ETM_Sr":  "4.00%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "4.75%",
+                                            "Tenure":  "91 Days",
+                                            "Off_Gen":  "4.00%",
+                                            "Off_Sr":  "4.50%",
+                                            "ETM_Sr":  "5.25%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "4.25%",
+                                            "Tenure":  "92 to 179 Days",
+                                            "Off_Gen":  "4.25%",
+                                            "Off_Sr":  "4.75%",
+                                            "ETM_Sr":  "4.75%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "5.50%",
+                                            "Tenure":  "180 Days",
+                                            "Off_Gen":  "5.00%",
+                                            "Off_Sr":  "5.50%",
+                                            "ETM_Sr":  "6.00%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "5.50%",
+                                            "Tenure":  "181 Days to 269 Days",
+                                            "Off_Gen":  "5.50%",
+                                            "Off_Sr":  "6.00%",
+                                            "ETM_Sr":  "6.00%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "5.50%",
+                                            "Tenure":  "270 Days",
+                                            "Off_Gen":  "5.50%",
+                                            "Off_Sr":  "6.00%",
+                                            "ETM_Sr":  "6.00%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.00%",
+                                            "Tenure":  "271 Days to 363 Days",
+                                            "Off_Gen":  "6.00%",
+                                            "Off_Sr":  "6.50%",
+                                            "ETM_Sr":  "6.50%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.00%",
+                                            "Tenure":  "364 Days",
+                                            "Off_Gen":  "6.00%",
+                                            "Off_Sr":  "6.50%",
+                                            "ETM_Sr":  "6.50%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.25%",
+                                            "Tenure":  "365 Days to \u003c 15 Months",
+                                            "Off_Gen":  "6.35%",
+                                            "Off_Sr":  "6.85%",
+                                            "ETM_Sr":  "6.75%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.70%",
+                                            "Tenure":  "15 Months to \u003c 18 Months",
+                                            "Off_Gen":  "6.45%",
+                                            "Off_Sr":  "6.95%",
+                                            "ETM_Sr":  "7.20%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.70%",
+                                            "Tenure":  "18 Months to \u003c 2 Years",
+                                            "Off_Gen":  "6.55%",
+                                            "Off_Sr":  "7.05%",
+                                            "ETM_Sr":  "7.20%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.40%",
+                                            "Tenure":  "2 Years to \u003c 3 Years",
+                                            "Off_Gen":  "6.65%",
+                                            "Off_Sr":  "7.15%",
+                                            "ETM_Sr":  "6.90%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.40%",
+                                            "Tenure":  "3 Years to \u003c 5 Years",
+                                            "Off_Gen":  "6.40%",
+                                            "Off_Sr":  "6.90%",
+                                            "ETM_Sr":  "6.90%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.25%",
+                                            "Tenure":  "5 Years to 10 Years",
+                                            "Off_Gen":  "6.25%",
+                                            "Off_Sr":  "6.75%",
+                                            "ETM_Sr":  "6.75%"
+                                        }
+                                    ],
+                           "ETMoneyUpdated":  "ET Money Table Heading: 2026 (Below Rs. 3 crore)"
+                       }
+                   ]
+    },
+    {
+        "OfficialUrl":  "https://www.canarabank.bank.in/pages/deposit-interest-rates",
+        "Bank":  "Canara Bank",
+        "Category":  "Public Sector Bank",
+        "ETMoneyUrl":  "https://www.etmoney.com/fixed-deposit/canara-bank-fd-rates/10",
+        "Tables":  [
+                       {
+                           "OfficialUpdated":  "Official Update Date: w.e.f. 17-March-2026 (\u003c Rs. 3 Crore)",
+                           "TableTitle":  "Table 1: Canara Bank FD Interest Rates (Below Rs. 3 Crore)",
+                           "OfficialLink":  "https://www.canarabank.bank.in/pages/deposit-interest-rates",
+                           "Rows":  [
+                                        {
+                                            "ETM_Gen":  "3.00%",
+                                            "Tenure":  "7 Days to 45 Days",
+                                            "Off_Gen":  "3.00%",
+                                            "Off_Sr":  "3.00%",
+                                            "ETM_Sr":  "3.00%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "4.00%",
+                                            "Tenure":  "46 Days to 90 Days",
+                                            "Off_Gen":  "4.00%",
+                                            "Off_Sr":  "4.00%",
+                                            "ETM_Sr":  "4.00%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "4.25%",
+                                            "Tenure":  "91 Days to 179 Days",
+                                            "Off_Gen":  "4.25%",
+                                            "Off_Sr":  "4.25%",
+                                            "ETM_Sr":  "4.25%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "5.25%",
+                                            "Tenure":  "180 Days to 269 Days",
+                                            "Off_Gen":  "5.25%",
+                                            "Off_Sr":  "5.75%",
+                                            "ETM_Sr":  "5.75%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "5.50%",
+                                            "Tenure":  "270 Days to \u003c 1 Year",
+                                            "Off_Gen":  "5.50%",
+                                            "Off_Sr":  "6.00%",
+                                            "ETM_Sr":  "6.00%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.25%",
+                                            "Tenure":  "1 Year to \u003c 2 Years",
+                                            "Off_Gen":  "6.25%",
+                                            "Off_Sr":  "6.75%",
+                                            "ETM_Sr":  "6.75%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.45%",
+                                            "Tenure":  "444 Days (Special Scheme)",
+                                            "Off_Gen":  "6.50%",
+                                            "Off_Sr":  "7.00%",
+                                            "ETM_Sr":  "6.95%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "--",
+                                            "Tenure":  "555 Days (Special Scheme)",
+                                            "Off_Gen":  "6.60%",
+                                            "Off_Sr":  "7.10%",
+                                            "ETM_Sr":  "--"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.25%",
+                                            "Tenure":  "2 Years to \u003c 3 Years",
+                                            "Off_Gen":  "6.25%",
+                                            "Off_Sr":  "6.75%",
+                                            "ETM_Sr":  "6.75%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.25%",
+                                            "Tenure":  "3 Years to \u003c 5 Years",
+                                            "Off_Gen":  "6.25%",
+                                            "Off_Sr":  "6.75%",
+                                            "ETM_Sr":  "6.75%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.25%",
+                                            "Tenure":  "5 Years to 10 Years",
+                                            "Off_Gen":  "6.25%",
+                                            "Off_Sr":  "6.75%",
+                                            "ETM_Sr":  "6.75%"
+                                        }
+                                    ],
+                           "ETMoneyUpdated":  "ET Money Table Heading: 2026 (Below Rs. 3 crore)"
+                       }
+                   ]
+    },
+    {
+        "OfficialUrl":  "https://www.yes.bank.in/",
+        "Bank":  "Yes Bank",
+        "Category":  "Private Sector Bank",
+        "ETMoneyUrl":  "https://www.etmoney.com/fixed-deposit/yes-bank-fd-rates/8",
+        "Tables":  [
+                       {
+                           "OfficialUpdated":  "Official Update Date: w.e.f. 02-June-2026 (\u003c Rs. 3 Crore)",
+                           "TableTitle":  "Table 1: Latest Yes Bank FD Interest Rates (Below Rs. 3 Crore)",
+                           "OfficialLink":  "https://www.yes.bank.in/",
+                           "Rows":  [
+                                        {
+                                            "ETM_Gen":  "3.25%",
+                                            "Tenure":  "7 days to 14 days",
+                                            "Off_Gen":  "3.25%",
+                                            "Off_Sr":  "3.75%",
+                                            "ETM_Sr":  "3.75%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "3.50%",
+                                            "Tenure":  "15 days to 45 days",
+                                            "Off_Gen":  "3.50%",
+                                            "Off_Sr":  "4.00%",
+                                            "ETM_Sr":  "4.00%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "4.50%",
+                                            "Tenure":  "46 days to 90 days",
+                                            "Off_Gen":  "4.50%",
+                                            "Off_Sr":  "5.00%",
+                                            "ETM_Sr":  "5.00%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "4.75%",
+                                            "Tenure":  "91 days to 180 days",
+                                            "Off_Gen":  "4.75%",
+                                            "Off_Sr":  "5.25%",
+                                            "ETM_Sr":  "5.25%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.00%",
+                                            "Tenure":  "181 days to 271 days",
+                                            "Off_Gen":  "6.00%",
+                                            "Off_Sr":  "6.50%",
+                                            "ETM_Sr":  "6.50%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.50%",
+                                            "Tenure":  "272 days to \u003c 12 months",
+                                            "Off_Gen":  "6.50%",
+                                            "Off_Sr":  "7.00%",
+                                            "ETM_Sr":  "7.00%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.65%",
+                                            "Tenure":  "12 months (1 Year)",
+                                            "Off_Gen":  "6.65%",
+                                            "Off_Sr":  "7.15%",
+                                            "ETM_Sr":  "7.15%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.75%",
+                                            "Tenure":  "12 months 1 day to \u003c 18 months",
+                                            "Off_Gen":  "6.75%",
+                                            "Off_Sr":  "7.25%",
+                                            "ETM_Sr":  "7.25%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "7.00%",
+                                            "Tenure":  "18 months 1 day to \u003c 24 months",
+                                            "Off_Gen":  "7.25%",
+                                            "Off_Sr":  "7.75%",
+                                            "ETM_Sr":  "7.50%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "7.00%",
+                                            "Tenure":  "24 months to \u003c 35 months",
+                                            "Off_Gen":  "7.00%",
+                                            "Off_Sr":  "7.50%",
+                                            "ETM_Sr":  "7.50%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "7.00%",
+                                            "Tenure":  "36 months to \u003c 60 months",
+                                            "Off_Gen":  "7.00%",
+                                            "Off_Sr":  "7.75%",
+                                            "ETM_Sr":  "7.75%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.75%",
+                                            "Tenure":  "60 months to 120 months",
+                                            "Off_Gen":  "6.75%",
+                                            "Off_Sr":  "7.50%",
+                                            "ETM_Sr":  "7.50%"
+                                        }
+                                    ],
+                           "ETMoneyUpdated":  "ET Money Table Heading: 2026 (Below Rs. 3 crore)"
+                       }
+                   ]
+    },
+    {
+        "OfficialUrl":  "https://www.indusind.bank.in/in/en/personal/rates.html",
+        "Bank":  "IndusInd Bank",
+        "Category":  "Private Sector Bank",
+        "ETMoneyUrl":  "https://www.etmoney.com/fixed-deposit/indusind-bank-fd-rates/11",
+        "Tables":  [
+                       {
+                           "OfficialUpdated":  "Official Update Date: w.e.f. 24-July-2026 (\u003c Rs. 3 Crore)",
+                           "TableTitle":  "Table 1: Revised IndusInd Bank FD Interest Rates (Below Rs. 3 Crore)",
+                           "OfficialLink":  "https://www.indusind.bank.in/in/en/personal/rates.html",
+                           "Rows":  [
+                                        {
+                                            "ETM_Gen":  "3.25%",
+                                            "Tenure":  "7 days to 30 days",
+                                            "Off_Gen":  "3.25%",
+                                            "Off_Sr":  "3.75%",
+                                            "ETM_Sr":  "3.75%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "3.50%",
+                                            "Tenure":  "31 days to 45 days",
+                                            "Off_Gen":  "3.50%",
+                                            "Off_Sr":  "4.00%",
+                                            "ETM_Sr":  "4.00%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "4.50%",
+                                            "Tenure":  "46 days to 60 days",
+                                            "Off_Gen":  "4.50%",
+                                            "Off_Sr":  "5.00%",
+                                            "ETM_Sr":  "5.00%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "4.75%",
+                                            "Tenure":  "61 days to 90 days",
+                                            "Off_Gen":  "4.75%",
+                                            "Off_Sr":  "5.25%",
+                                            "ETM_Sr":  "5.25%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "5.00%",
+                                            "Tenure":  "91 days to 180 days",
+                                            "Off_Gen":  "5.00%",
+                                            "Off_Sr":  "5.50%",
+                                            "ETM_Sr":  "5.50%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "5.75%",
+                                            "Tenure":  "180 days",
+                                            "Off_Gen":  "6.00%",
+                                            "Off_Sr":  "6.50%",
+                                            "ETM_Sr":  "6.25%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.00%",
+                                            "Tenure":  "181 days to 269 days",
+                                            "Off_Gen":  "6.00%",
+                                            "Off_Sr":  "6.50%",
+                                            "ETM_Sr":  "6.50%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.25%",
+                                            "Tenure":  "270 days to 364 days",
+                                            "Off_Gen":  "6.25%",
+                                            "Off_Sr":  "6.75%",
+                                            "ETM_Sr":  "6.75%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.75%",
+                                            "Tenure":  "1 Year to \u003c 1 Year 6 Months",
+                                            "Off_Gen":  "6.75%",
+                                            "Off_Sr":  "7.25%",
+                                            "ETM_Sr":  "7.25%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "7.00%",
+                                            "Tenure":  "1 Year 6 Months to \u003c 2 Years",
+                                            "Off_Gen":  "6.90%",
+                                            "Off_Sr":  "7.40%",
+                                            "ETM_Sr":  "7.50%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.90%",
+                                            "Tenure":  "2 Years to 3 Years",
+                                            "Off_Gen":  "7.00%",
+                                            "Off_Sr":  "7.75%",
+                                            "ETM_Sr":  "7.40%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.65%",
+                                            "Tenure":  "Above 3 Years to \u003c 61 Months",
+                                            "Off_Gen":  "6.65%",
+                                            "Off_Sr":  "7.15%",
+                                            "ETM_Sr":  "7.15%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.50%",
+                                            "Tenure":  "61 Months and above",
+                                            "Off_Gen":  "6.65%",
+                                            "Off_Sr":  "7.15%",
+                                            "ETM_Sr":  "7.00%"
+                                        }
+                                    ],
+                           "ETMoneyUpdated":  "ET Money Table Heading: 2026 (Below Rs. 3 crore)"
+                       }
+                   ]
+    },
+    {
+        "OfficialUrl":  "https://www.idfcfirst.bank.in/personal-banking/deposits/fixed-deposit/fd-interest-rates",
+        "Bank":  "IDFC FIRST Bank",
+        "Category":  "Private Sector Bank",
+        "ETMoneyUrl":  "https://www.etmoney.com/fixed-deposit/idfc-first-bank-fd-rates/7",
+        "Tables":  [
+                       {
+                           "OfficialUpdated":  "Official Update Date: w.e.f. 01-September-2026 (Retail \u003c Rs. 3 Crore)",
+                           "TableTitle":  "Table 1: IDFC FIRST Bank Term Deposit Interest Rates (Below Rs. 3 Crore)",
+                           "OfficialLink":  "https://www.idfcfirst.bank.in/personal-banking/deposits/fixed-deposit/fd-interest-rates",
+                           "Rows":  [
+                                        {
+                                            "ETM_Gen":  "3.25%",
+                                            "Tenure":  "7 to 14 days",
+                                            "Off_Gen":  "3.25%",
+                                            "Off_Sr":  "3.75%",
+                                            "ETM_Sr":  "3.50%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "3.25%",
+                                            "Tenure":  "15 to 29 days",
+                                            "Off_Gen":  "3.25%",
+                                            "Off_Sr":  "3.75%",
+                                            "ETM_Sr":  "3.50%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "3.50%",
+                                            "Tenure":  "30 to 45 days",
+                                            "Off_Gen":  "3.50%",
+                                            "Off_Sr":  "4.00%",
+                                            "ETM_Sr":  "3.75%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "4.50%",
+                                            "Tenure":  "46 to 90 days",
+                                            "Off_Gen":  "4.50%",
+                                            "Off_Sr":  "5.00%",
+                                            "ETM_Sr":  "4.75%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "5.00%",
+                                            "Tenure":  "91 to 180 days",
+                                            "Off_Gen":  "5.00%",
+                                            "Off_Sr":  "5.50%",
+                                            "ETM_Sr":  "5.25%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.50%",
+                                            "Tenure":  "181 days to less than 1 year",
+                                            "Off_Gen":  "6.50%",
+                                            "Off_Sr":  "7.00%",
+                                            "ETM_Sr":  "6.75%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.50%",
+                                            "Tenure":  "1 year (365 days)",
+                                            "Off_Gen":  "6.50%",
+                                            "Off_Sr":  "7.00%",
+                                            "ETM_Sr":  "6.75%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "7.25%",
+                                            "Tenure":  "500 days",
+                                            "Off_Gen":  "7.25%",
+                                            "Off_Sr":  "7.75%",
+                                            "ETM_Sr":  "7.50%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "7.00%",
+                                            "Tenure":  "2 years to 3 years",
+                                            "Off_Gen":  "7.00%",
+                                            "Off_Sr":  "7.50%",
+                                            "ETM_Sr":  "7.25%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "7.00%",
+                                            "Tenure":  "5 years (Tax Saver)",
+                                            "Off_Gen":  "7.00%",
+                                            "Off_Sr":  "7.50%",
+                                            "ETM_Sr":  "7.25%"
+                                        }
+                                    ],
+                           "ETMoneyUpdated":  "ET Money Table Heading: 2026 (Below Rs. 3 crore)"
+                       }
+                   ]
+    },
+    {
+        "OfficialUrl":  "https://www.idbi.bank.in/interest-rates.aspx",
+        "Bank":  "IDBI Bank",
+        "Category":  "Private/Public Sector Bank",
+        "ETMoneyUrl":  "https://www.etmoney.com/fixed-deposit/idbi-bank-fd-rates/13",
+        "Tables":  [
+                       {
+                           "OfficialUpdated":  "Official Update Date: w.e.f. September-2026 (\u003c Rs. 3 Crore)",
+                           "TableTitle":  "Table 1: IDBI Bank FD Interest Rates (Below Rs. 3 Crore)",
+                           "OfficialLink":  "https://www.idbi.bank.in/interest-rates.aspx",
+                           "Rows":  [
+                                        {
+                                            "ETM_Gen":  "3.00%",
+                                            "Tenure":  "07-30 days",
+                                            "Off_Gen":  "3.00%",
+                                            "Off_Sr":  "3.50%",
+                                            "ETM_Sr":  "3.50%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "3.15%",
+                                            "Tenure":  "31-45 days",
+                                            "Off_Gen":  "3.15%",
+                                            "Off_Sr":  "3.65%",
+                                            "ETM_Sr":  "3.65%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "4.35%",
+                                            "Tenure":  "46-60 days",
+                                            "Off_Gen":  "4.35%",
+                                            "Off_Sr":  "4.85%",
+                                            "ETM_Sr":  "4.85%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "4.60%",
+                                            "Tenure":  "61- 90 days",
+                                            "Off_Gen":  "4.60%",
+                                            "Off_Sr":  "5.10%",
+                                            "ETM_Sr":  "5.10%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "5.35%",
+                                            "Tenure":  "91 days to 6 months",
+                                            "Off_Gen":  "5.35%",
+                                            "Off_Sr":  "5.85%",
+                                            "ETM_Sr":  "5.85%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "5.50%",
+                                            "Tenure":  "6 months 1 day to 270 Days",
+                                            "Off_Gen":  "5.50%",
+                                            "Off_Sr":  "6.00%",
+                                            "ETM_Sr":  "6.00%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "5.80%",
+                                            "Tenure":  "271 days to \u003c 1 year",
+                                            "Off_Gen":  "5.80%",
+                                            "Off_Sr":  "6.30%",
+                                            "ETM_Sr":  "6.30%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.25%",
+                                            "Tenure":  "1 Year to 2 Years",
+                                            "Off_Gen":  "6.25%",
+                                            "Off_Sr":  "6.75%",
+                                            "ETM_Sr":  "6.75%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.50%",
+                                            "Tenure":  "\u003e 2 Years to \u003c 3 Years",
+                                            "Off_Gen":  "6.50%",
+                                            "Off_Sr":  "7.00%",
+                                            "ETM_Sr":  "7.05%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.35%",
+                                            "Tenure":  "3 years to \u003c 5 years",
+                                            "Off_Gen":  "6.35%",
+                                            "Off_Sr":  "6.85%",
+                                            "ETM_Sr":  "6.85%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.25%",
+                                            "Tenure":  "Tax Saving FD - 5 years",
+                                            "Off_Gen":  "6.25%",
+                                            "Off_Sr":  "6.75%",
+                                            "ETM_Sr":  "6.75%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "5.90%",
+                                            "Tenure":  "\u003e 5 years to 10 years",
+                                            "Off_Gen":  "5.90%",
+                                            "Off_Sr":  "6.40%",
+                                            "ETM_Sr":  "6.40%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "--",
+                                            "Tenure":  "1100 Days (Utsav Special)",
+                                            "Off_Gen":  "6.55%",
+                                            "Off_Sr":  "7.05%",
+                                            "ETM_Sr":  "--"
+                                        }
+                                    ],
+                           "ETMoneyUpdated":  "ET Money Table Heading: 2026 (Below Rs. 3 crore)"
+                       }
+                   ]
+    },
+    {
+        "OfficialUrl":  "https://www.unionbankofindia.bank.in/en/details/interest-rates-on-deposit",
+        "Bank":  "Union Bank",
+        "Category":  "Public Sector Bank",
+        "ETMoneyUrl":  "https://www.etmoney.com/fixed-deposit/union-bank-fd-rates/14",
+        "Tables":  [
+                       {
+                           "OfficialUpdated":  "Official Update Date: w.e.f. 04-August-2026 (\u003c Rs. 3 Crore)",
+                           "TableTitle":  "Table 1: Union Bank FD Interest Rates (Below Rs. 3 Crore)",
+                           "OfficialLink":  "https://www.unionbankofindia.bank.in/en/details/interest-rates-on-deposit",
+                           "Rows":  [
+                                        {
+                                            "ETM_Gen":  "2.75%",
+                                            "Tenure":  "7-14 Days",
+                                            "Off_Gen":  "2.70%",
+                                            "Off_Sr":  "3.20%",
+                                            "ETM_Sr":  "3.25%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "3.00%",
+                                            "Tenure":  "15-30 Days",
+                                            "Off_Gen":  "2.80%",
+                                            "Off_Sr":  "3.30%",
+                                            "ETM_Sr":  "3.50%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "3.25%",
+                                            "Tenure":  "31-45 Days",
+                                            "Off_Gen":  "3.00%",
+                                            "Off_Sr":  "3.50%",
+                                            "ETM_Sr":  "3.75%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "4.40%",
+                                            "Tenure":  "46-90 Days",
+                                            "Off_Gen":  "4.00%",
+                                            "Off_Sr":  "4.50%",
+                                            "ETM_Sr":  "4.90%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "4.75%",
+                                            "Tenure":  "91-120 Days",
+                                            "Off_Gen":  "4.30%",
+                                            "Off_Sr":  "4.80%",
+                                            "ETM_Sr":  "2.25%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "5.00%",
+                                            "Tenure":  "121-180 Days",
+                                            "Off_Gen":  "4.75%",
+                                            "Off_Sr":  "5.25%",
+                                            "ETM_Sr":  "5.50%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "5.75%",
+                                            "Tenure":  "181-270 days",
+                                            "Off_Gen":  "5.40%",
+                                            "Off_Sr":  "5.90%",
+                                            "ETM_Sr":  "6.25%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.00%",
+                                            "Tenure":  "271-364 days",
+                                            "Off_Gen":  "5.60%",
+                                            "Off_Sr":  "6.10%",
+                                            "ETM_Sr":  "6.50%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.25%",
+                                            "Tenure":  "1 Year to 399 days",
+                                            "Off_Gen":  "6.20%",
+                                            "Off_Sr":  "6.70%",
+                                            "ETM_Sr":  "6.75%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.30%",
+                                            "Tenure":  "400 days",
+                                            "Off_Gen":  "6.25%",
+                                            "Off_Sr":  "6.75%",
+                                            "ETM_Sr":  "6.80%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "--",
+                                            "Tenure":  "444 Days Special",
+                                            "Off_Gen":  "6.50%",
+                                            "Off_Sr":  "7.00%",
+                                            "ETM_Sr":  "--"
+                                        },
+                                        {
+                                            "ETM_Gen":  "--",
+                                            "Tenure":  "555 Days Special (Highest)",
+                                            "Off_Gen":  "6.55%",
+                                            "Off_Sr":  "7.05%",
+                                            "ETM_Sr":  "--"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.00%",
+                                            "Tenure":  "\u003e 2 Years to 3 Years",
+                                            "Off_Gen":  "6.10%",
+                                            "Off_Sr":  "6.60%",
+                                            "ETM_Sr":  "6.50%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "5.90%",
+                                            "Tenure":  "\u003e 3 Years to 10 Years",
+                                            "Off_Gen":  "6.00%",
+                                            "Off_Sr":  "6.50%",
+                                            "ETM_Sr":  "6.40%"
+                                        }
+                                    ],
+                           "ETMoneyUpdated":  "ET Money Table Heading: 2026 (Below Rs. 3 crore)"
+                       }
+                   ]
+    },
+    {
+        "OfficialUrl":  "https://www.rbl.bank.in/interest-rates?tab=fixed-deposit",
+        "Bank":  "RBL Bank",
+        "Category":  "Private Sector Bank",
+        "ETMoneyUrl":  "https://www.etmoney.com/fixed-deposit/rbl-bank-fd-rates/16",
+        "Tables":  [
+                       {
+                           "OfficialUpdated":  "Official Update Date: w.e.f. 01-October-2026 (\u003c Rs. 3 Crore)",
+                           "TableTitle":  "Table 1: RBL Bank FD Interest Rates (Below Rs. 3 Crore)",
+                           "OfficialLink":  "https://www.rbl.bank.in/interest-rates?tab=fixed-deposit",
+                           "Rows":  [
+                                        {
+                                            "ETM_Gen":  "3.50%",
+                                            "Tenure":  "7 days to 14 days",
+                                            "Off_Gen":  "3.50%",
+                                            "Off_Sr":  "4.00%",
+                                            "ETM_Sr":  "4.00%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "4.00%",
+                                            "Tenure":  "15 days to 45 days",
+                                            "Off_Gen":  "3.50%",
+                                            "Off_Sr":  "4.00%",
+                                            "ETM_Sr":  "4.50%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "4.50%",
+                                            "Tenure":  "46 days to 90 days",
+                                            "Off_Gen":  "4.00%",
+                                            "Off_Sr":  "4.50%",
+                                            "ETM_Sr":  "5.00%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "4.75%",
+                                            "Tenure":  "91 days to 180 days",
+                                            "Off_Gen":  "4.50%",
+                                            "Off_Sr":  "5.00%",
+                                            "ETM_Sr":  "5.25%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "5.50%",
+                                            "Tenure":  "181 days to 240 days",
+                                            "Off_Gen":  "5.50%",
+                                            "Off_Sr":  "6.00%",
+                                            "ETM_Sr":  "6.00%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.05%",
+                                            "Tenure":  "241 days to 364 days",
+                                            "Off_Gen":  "6.00%",
+                                            "Off_Sr":  "6.50%",
+                                            "ETM_Sr":  "6.55%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "7.00%",
+                                            "Tenure":  "365 days to 500 days",
+                                            "Off_Gen":  "6.90%",
+                                            "Off_Sr":  "7.40%",
+                                            "ETM_Sr":  "7.50%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "7.20%",
+                                            "Tenure":  "18 months to 36 months",
+                                            "Off_Gen":  "7.00%",
+                                            "Off_Sr":  "7.50%",
+                                            "ETM_Sr":  "7.70%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "7.00%",
+                                            "Tenure":  "36 months to \u003c 60 months",
+                                            "Off_Gen":  "7.00%",
+                                            "Off_Sr":  "7.50%",
+                                            "ETM_Sr":  "7.50%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.70%",
+                                            "Tenure":  "60 months to 120 months",
+                                            "Off_Gen":  "6.70%",
+                                            "Off_Sr":  "7.20%",
+                                            "ETM_Sr":  "7.20%"
+                                        }
+                                    ],
+                           "ETMoneyUpdated":  "ET Money Table Heading: 2026 (Below Rs. 3 crore)"
+                       }
+                   ]
+    },
+    {
+        "OfficialUrl":  "https://www.indianbank.bank.in/departments/deposit-rates/",
+        "Bank":  "Indian Bank",
+        "Category":  "Public Sector Bank",
+        "ETMoneyUrl":  "https://www.etmoney.com/fixed-deposit/indian-bank-fd-rates/17",
+        "Tables":  [
+                       {
+                           "OfficialUpdated":  "Official Update Date: w.e.f. August-2026 (\u003c Rs. 3 Crore)",
+                           "TableTitle":  "Table 1: Indian Bank FD Interest Rates (Below Rs. 3 Crore)",
+                           "OfficialLink":  "https://www.indianbank.bank.in/departments/deposit-rates/",
+                           "Rows":  [
+                                        {
+                                            "ETM_Gen":  "2.80%",
+                                            "Tenure":  "7 days to 29 days",
+                                            "Off_Gen":  "2.80%",
+                                            "Off_Sr":  "3.30%",
+                                            "ETM_Sr":  "3.30%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "3.00%",
+                                            "Tenure":  "30 days to 45 days",
+                                            "Off_Gen":  "3.00%",
+                                            "Off_Sr":  "3.50%",
+                                            "ETM_Sr":  "3.50%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "3.25%",
+                                            "Tenure":  "46 days to 90 days",
+                                            "Off_Gen":  "3.25%",
+                                            "Off_Sr":  "3.75%",
+                                            "ETM_Sr":  "3.75%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "3.50%",
+                                            "Tenure":  "91 days to 120 days",
+                                            "Off_Gen":  "3.50%",
+                                            "Off_Sr":  "4.00%",
+                                            "ETM_Sr":  "4.00%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "3.85%",
+                                            "Tenure":  "121 days to 180 days",
+                                            "Off_Gen":  "3.85%",
+                                            "Off_Sr":  "4.35%",
+                                            "ETM_Sr":  "4.35%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "4.50%",
+                                            "Tenure":  "181 days to \u003c 9 months",
+                                            "Off_Gen":  "4.50%",
+                                            "Off_Sr":  "5.00%",
+                                            "ETM_Sr":  "5.00%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "4.75%",
+                                            "Tenure":  "9 months to \u003c 1 year",
+                                            "Off_Gen":  "4.75%",
+                                            "Off_Sr":  "5.25%",
+                                            "ETM_Sr":  "5.25%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.10%",
+                                            "Tenure":  "1 year",
+                                            "Off_Gen":  "6.10%",
+                                            "Off_Sr":  "6.60%",
+                                            "ETM_Sr":  "6.60%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.20%",
+                                            "Tenure":  "Above 1 year to \u003c 2 years",
+                                            "Off_Gen":  "6.20%",
+                                            "Off_Sr":  "6.70%",
+                                            "ETM_Sr":  "6.70%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.45%",
+                                            "Tenure":  "IND SECURE 444 Days",
+                                            "Off_Gen":  "6.45%",
+                                            "Off_Sr":  "6.95%",
+                                            "ETM_Sr":  "6.95%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "--",
+                                            "Tenure":  "IND Grow 555 Days",
+                                            "Off_Gen":  "6.65%",
+                                            "Off_Sr":  "7.15%",
+                                            "ETM_Sr":  "--"
+                                        },
+                                        {
+                                            "ETM_Gen":  "--",
+                                            "Tenure":  "IND Prosper 777 Days",
+                                            "Off_Gen":  "6.60%",
+                                            "Off_Sr":  "7.10%",
+                                            "ETM_Sr":  "--"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.15%",
+                                            "Tenure":  "2 years to \u003c 3 years",
+                                            "Off_Gen":  "6.15%",
+                                            "Off_Sr":  "6.65%",
+                                            "ETM_Sr":  "6.65%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.05%",
+                                            "Tenure":  "3 years to \u003c 5 years",
+                                            "Off_Gen":  "6.05%",
+                                            "Off_Sr":  "6.55%",
+                                            "ETM_Sr":  "6.55%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.00%",
+                                            "Tenure":  "5 years and above",
+                                            "Off_Gen":  "6.00%",
+                                            "Off_Sr":  "6.50%",
+                                            "ETM_Sr":  "6.50%"
+                                        }
+                                    ],
+                           "ETMoneyUpdated":  "ET Money Table Heading: 2026 (Below Rs. 3 crore)"
+                       }
+                   ]
+    },
+    {
+        "OfficialUrl":  "https://suryoday.bank.in/rates-and-charges/interest-rates/",
+        "Bank":  "Suryoday SF Bank",
+        "Category":  "Small Finance Bank",
+        "ETMoneyUrl":  "https://www.etmoney.com/fixed-deposit/suryoday-sf-bank-fd-rates/18",
+        "Tables":  [
+                       {
+                           "OfficialUpdated":  "Official Update Date: w.e.f. 16-October-2026 (\u003c Rs. 3 Crore)",
+                           "TableTitle":  "Table 1: Suryoday SF Bank FD Interest Rates (Below Rs. 3 Crore)",
+                           "OfficialLink":  "https://suryoday.bank.in/rates-and-charges/interest-rates/",
+                           "Rows":  [
+                                        {
+                                            "ETM_Gen":  "4.25%",
+                                            "Tenure":  "7 days to 14 days",
+                                            "Off_Gen":  "4.00%",
+                                            "Off_Sr":  "4.15%",
+                                            "ETM_Sr":  "4.50%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "4.50%",
+                                            "Tenure":  "15 days to 45 days",
+                                            "Off_Gen":  "4.25%",
+                                            "Off_Sr":  "4.50%",
+                                            "ETM_Sr":  "4.75%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "5.00%",
+                                            "Tenure":  "46 days to 90 days",
+                                            "Off_Gen":  "4.75%",
+                                            "Off_Sr":  "5.00%",
+                                            "ETM_Sr":  "5.25%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "5.50%",
+                                            "Tenure":  "91 days to 6 months",
+                                            "Off_Gen":  "5.50%",
+                                            "Off_Sr":  "5.75%",
+                                            "ETM_Sr":  "5.75%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.25%",
+                                            "Tenure":  "Above 6 months to 9 months",
+                                            "Off_Gen":  "6.25%",
+                                            "Off_Sr":  "6.50%",
+                                            "ETM_Sr":  "6.50%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "7.25%",
+                                            "Tenure":  "1 Year to \u003c 2 Years",
+                                            "Off_Gen":  "7.25%",
+                                            "Off_Sr":  "7.50%",
+                                            "ETM_Sr":  "7.50%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "8.10%",
+                                            "Tenure":  "2 Years to 3 Years",
+                                            "Off_Gen":  "8.10%",
+                                            "Off_Sr":  "8.35%",
+                                            "ETM_Sr":  "8.35%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "8.25%",
+                                            "Tenure":  "5 Years (Tax Saver / Peak)",
+                                            "Off_Gen":  "8.25%",
+                                            "Off_Sr":  "8.50%",
+                                            "ETM_Sr":  "8.50%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "7.25%",
+                                            "Tenure":  "Above 5 Years to 10 Years",
+                                            "Off_Gen":  "7.25%",
+                                            "Off_Sr":  "7.50%",
+                                            "ETM_Sr":  "7.50%"
+                                        }
+                                    ],
+                           "ETMoneyUpdated":  "ET Money Table Heading: 2026"
+                       }
+                   ]
+    },
+    {
+        "OfficialUrl":  "https://shivalik.bank.in/interest-rate",
+        "Bank":  "Shivalik SF Bank",
+        "Category":  "Small Finance Bank",
+        "ETMoneyUrl":  "https://www.etmoney.com/fixed-deposit/shivalik-sf-bank-fd-rates/20",
+        "Tables":  [
+                       {
+                           "OfficialUpdated":  "Official Update Date: w.e.f. 01-September-2026 (\u003c Rs. 3 Crore)",
+                           "TableTitle":  "Table 1: Shivalik SF Bank FD Interest Rates (Below Rs. 3 Crore)",
+                           "OfficialLink":  "https://shivalik.bank.in/interest-rate",
+                           "Rows":  [
+                                        {
+                                            "ETM_Gen":  "3.50%",
+                                            "Tenure":  "7 days to 14 days",
+                                            "Off_Gen":  "3.50%",
+                                            "Off_Sr":  "3.75%",
+                                            "ETM_Sr":  "3.75%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "3.75%",
+                                            "Tenure":  "15 days to 29 days",
+                                            "Off_Gen":  "3.75%",
+                                            "Off_Sr":  "4.00%",
+                                            "ETM_Sr":  "4.00%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "4.25%",
+                                            "Tenure":  "30 days to 90 days",
+                                            "Off_Gen":  "4.25%",
+                                            "Off_Sr":  "4.50%",
+                                            "ETM_Sr":  "4.50%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "4.75%",
+                                            "Tenure":  "91 days to 180 days",
+                                            "Off_Gen":  "4.75%",
+                                            "Off_Sr":  "5.00%",
+                                            "ETM_Sr":  "5.00%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.00%",
+                                            "Tenure":  "6 months to 12 months",
+                                            "Off_Gen":  "6.00%",
+                                            "Off_Sr":  "6.25%",
+                                            "ETM_Sr":  "6.25%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.75%",
+                                            "Tenure":  "12 months 1 day to \u003c 18 months",
+                                            "Off_Gen":  "6.75%",
+                                            "Off_Sr":  "7.00%",
+                                            "ETM_Sr":  "7.00%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "7.50%",
+                                            "Tenure":  "18 months to 23 months",
+                                            "Off_Gen":  "7.50%",
+                                            "Off_Sr":  "7.75%",
+                                            "ETM_Sr":  "7.75%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "8.00%",
+                                            "Tenure":  "23 months 1 day to 27 months (Peak)",
+                                            "Off_Gen":  "8.00%",
+                                            "Off_Sr":  "8.25%",
+                                            "ETM_Sr":  "8.25%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "7.50%",
+                                            "Tenure":  "27 months 1 day to 36 months",
+                                            "Off_Gen":  "7.50%",
+                                            "Off_Sr":  "7.75%",
+                                            "ETM_Sr":  "7.75%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.25%",
+                                            "Tenure":  "36 months 1 day to 60 months",
+                                            "Off_Gen":  "6.25%",
+                                            "Off_Sr":  "6.50%",
+                                            "ETM_Sr":  "6.50%"
+                                        }
+                                    ],
+                           "ETMoneyUpdated":  "ET Money Table Heading: 2026"
+                       }
+                   ]
+    },
+    {
+        "OfficialUrl":  "https://slice.bank.in/",
+        "Bank":  "slice SF Bank",
+        "Category":  "Small Finance Bank",
+        "ETMoneyUrl":  "https://www.etmoney.com/fixed-deposit/slice-sf-bank-fd-rates/19",
+        "Tables":  [
+                       {
+                           "OfficialUpdated":  "Official Update Date: w.e.f. 19-August-2026 (slice.bank.in)",
+                           "TableTitle":  "Table 1: slice SF Bank FD Interest Rates",
+                           "OfficialLink":  "https://slice.bank.in/",
+                           "Rows":  [
+                                        {
+                                            "ETM_Gen":  "3.50%",
+                                            "Tenure":  "7 days to 30 days",
+                                            "Off_Gen":  "3.50%",
+                                            "Off_Sr":  "3.75%",
+                                            "ETM_Sr":  "3.75%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "4.50%",
+                                            "Tenure":  "31 days to 90 days",
+                                            "Off_Gen":  "4.50%",
+                                            "Off_Sr":  "4.75%",
+                                            "ETM_Sr":  "4.75%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "5.50%",
+                                            "Tenure":  "91 days to 180 days",
+                                            "Off_Gen":  "5.50%",
+                                            "Off_Sr":  "5.50%",
+                                            "ETM_Sr":  "5.50%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "6.25%",
+                                            "Tenure":  "6 Months to \u003c 1 Year",
+                                            "Off_Gen":  "6.25%",
+                                            "Off_Sr":  "6.25%",
+                                            "ETM_Sr":  "6.25%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "7.25%",
+                                            "Tenure":  "1 Year to \u003c 2 Years",
+                                            "Off_Gen":  "7.25%",
+                                            "Off_Sr":  "7.25%",
+                                            "ETM_Sr":  "7.25%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "7.50%",
+                                            "Tenure":  "2 Years to \u003c 3 Years",
+                                            "Off_Gen":  "7.50%",
+                                            "Off_Sr":  "7.50%",
+                                            "ETM_Sr":  "7.50%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "7.75%",
+                                            "Tenure":  "3 Years to 5 Years (Peak)",
+                                            "Off_Gen":  "7.75%",
+                                            "Off_Sr":  "7.75%",
+                                            "ETM_Sr":  "7.75%"
+                                        }
+                                    ],
+                           "ETMoneyUpdated":  "ET Money Table Heading: 2026"
+                       }
+                   ]
+    },
+    {
+        "OfficialUrl":  "https://www.bajajfinserv.in/investments/fixed-deposit",
+        "Bank":  "Bajaj Finance Ltd.",
+        "Category":  "NBFC (Corporate FD)",
+        "ETMoneyUrl":  "https://www.etmoney.com/fixed-deposit/bajaj-finance-ltd-fd-rates/1",
+        "Tables":  [
+                       {
+                           "OfficialUpdated":  "Official Update Date: w.e.f. 07-October-2026",
+                           "TableTitle":  "Table 1: Bajaj Finance Ltd. FD Interest Rates (Rs. 15,000 to Rs. 3 Crore)",
+                           "OfficialLink":  "https://www.bajajfinserv.in/investments/fixed-deposit",
+                           "Rows":  [
+                                        {
+                                            "ETM_Gen":  "6.80%",
+                                            "Tenure":  "12 to 17 months",
+                                            "Off_Gen":  "6.80%",
+                                            "Off_Sr":  "7.20%",
+                                            "ETM_Sr":  "7.20%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "7.00%",
+                                            "Tenure":  "18 to 30 months",
+                                            "Off_Gen":  "7.00%",
+                                            "Off_Sr":  "7.40%",
+                                            "ETM_Sr":  "7.40%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "7.75%",
+                                            "Tenure":  "31 to 60 months",
+                                            "Off_Gen":  "7.75%",
+                                            "Off_Sr":  "8.15%",
+                                            "ETM_Sr":  "8.15%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "--",
+                                            "Tenure":  "Special Renewal Benefit (+0.10%)",
+                                            "Off_Gen":  "7.85%",
+                                            "Off_Sr":  "8.25%",
+                                            "ETM_Sr":  "--"
+                                        }
+                                    ],
+                           "ETMoneyUpdated":  "ET Money Table Heading: 2026"
+                       }
+                   ]
+    },
+    {
+        "OfficialUrl":  "https://www.shriramfinance.in/fixed-deposit",
+        "Bank":  "Shriram Finance",
+        "Category":  "NBFC (Corporate FD)",
+        "ETMoneyUrl":  "https://www.etmoney.com/fixed-deposit/shriram-finance-fd-rates/21",
+        "Tables":  [
+                       {
+                           "OfficialUpdated":  "Official Update Date: w.e.f. 11-October-2026",
+                           "TableTitle":  "Table 1: Shriram Unnati Fixed Deposit Interest Rates (Below Rs. 10 Crore)",
+                           "OfficialLink":  "https://www.shriramfinance.in/fixed-deposit",
+                           "Rows":  [
+                                        {
+                                            "ETM_Gen":  "7.00%",
+                                            "Tenure":  "12 months",
+                                            "Off_Gen":  "7.00%",
+                                            "Off_Sr":  "7.50%",
+                                            "ETM_Sr":  "7.50%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "--",
+                                            "Tenure":  "15 months (Digital Only)",
+                                            "Off_Gen":  "7.50%",
+                                            "Off_Sr":  "8.00%",
+                                            "ETM_Sr":  "--"
+                                        },
+                                        {
+                                            "ETM_Gen":  "7.25%",
+                                            "Tenure":  "18 to 23 months",
+                                            "Off_Gen":  "7.25%",
+                                            "Off_Sr":  "7.75%",
+                                            "ETM_Sr":  "7.75%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "7.50%",
+                                            "Tenure":  "24 to 35 months",
+                                            "Off_Gen":  "7.50%",
+                                            "Off_Sr":  "8.00%",
+                                            "ETM_Sr":  "8.00%"
+                                        },
+                                        {
+                                            "ETM_Gen":  "7.60%",
+                                            "Tenure":  "36 to 60 months",
+                                            "Off_Gen":  "7.85%",
+                                            "Off_Sr":  "8.35%",
+                                            "ETM_Sr":  "8.10%"
+                                        }
+                                    ],
+                           "ETMoneyUpdated":  "ET Money Table Heading: 2026"
+                       }
+                   ]
+    }
+]
+;
+    const tabsEl = document.getElementById('tabs');
+    const contentEl = document.getElementById('content');
+
+    function normalizeRate(val) {
+      if (!val) return null;
+      const m = String(val).match(/([0-9]+(\.[0-9]+)?)/);
+      return m ? parseFloat(m[1]) : null;
+    }
+
+    function evaluateRow(r) {
+      let statusStr = 'No Change (In Sync)';
+      let rowClass = '';
+      if (!r.ETM_Gen || r.ETM_Gen === '--') {
+        statusStr = 'NEW SPECIAL SCHEME (Official Portal)';
+        rowClass = 'row-new';
+      } else {
+        const eG = normalizeRate(r.ETM_Gen);
+        const oG = normalizeRate(r.Off_Gen);
+        const eS = normalizeRate(r.ETM_Sr);
+        const oS = normalizeRate(r.Off_Sr);
+        const diffG = (eG !== null && oG !== null) ? Math.round((oG - eG) * 100) / 100 : 0;
+        const diffS = (eS !== null && oS !== null) ? Math.round((oS - eS) * 100) / 100 : 0;
+        const gPart = diffG > 0 ? ('+' + diffG.toFixed(2) + '%') : (diffG < 0 ? (diffG.toFixed(2) + '%') : 'Same');
+        const sPart = diffS > 0 ? ('+' + diffS.toFixed(2) + '%') : (diffS < 0 ? (diffS.toFixed(2) + '%') : 'Same');
+        if (diffG > 0 || diffS > 0) {
+          statusStr = 'HIGHER ON OFFICIAL (Gen: ' + gPart + ', Sr: ' + sPart + ')';
+          rowClass = 'row-hike';
+        } else if (diffG < 0 || diffS < 0) {
+          statusStr = 'LOWER ON OFFICIAL (Gen: ' + gPart + ', Sr: ' + sPart + ')';
+          rowClass = 'row-cut';
+        }
+      }
+      return { statusStr: statusStr, rowClass: rowClass };
+    }
+
+    function escapeHtml(str) {
+      if (str === null || str === undefined) return '-';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+    }
+
+    function renderBankCard(bank) {
+      const tables = bank.Tables || [];
+      let tablesHtml = '';
+
+      tables.forEach(function(tbl, idx) {
+        let rowsHtml = '';
+        const rows = tbl.Rows || [];
+        rows.forEach(function(r) {
+          const ev = evaluateRow(r);
+          rowsHtml += '<tr class="' + ev.rowClass + '">' +
+            '<td><strong>' + escapeHtml(r.Tenure || '-') + '</strong></td>' +
+            '<td>' + escapeHtml(r.ETM_Gen || '-') + '</td>' +
+            '<td class="divider-col">' + escapeHtml(r.ETM_Sr || '-') + '</td>' +
+            '<td>' + escapeHtml(r.Off_Gen || '-') + '</td>' +
+            '<td>' + escapeHtml(r.Off_Sr || '-') + '</td>' +
+            '<td>' + escapeHtml(ev.statusStr) + '</td>' +
+          '</tr>';
+        });
+
+        tablesHtml +=
+          '<div class="table-section">' +
+            '<div class="table-banner">' +
+              '<span>' + escapeHtml(tbl.TableTitle) + '</span>' +
+              '<span class="tbl-tag">Separate Table ' + (idx + 1) + ' of ' + tables.length + ' (Unmerged)</span>' +
+            '</div>' +
+            '<div class="table-dates-bar">' +
+              '<span class="date-pill">' + escapeHtml(tbl.ETMoneyUpdated) + '</span>' +
+              '<span class="date-pill">' + escapeHtml(tbl.OfficialUpdated) + '</span>' +
+              '<span>Official Table Link: <a href="' + tbl.OfficialLink + '" target="_blank">' + escapeHtml(tbl.OfficialLink) + ' &rarr;</a></span>' +
+            '</div>' +
+            '<table>' +
+              '<thead>' +
+                '<tr>' +
+                  '<th>Deposit Tenure / Scheme</th>' +
+                  '<th>ET Money (General)</th>' +
+                  '<th>ET Money (Senior)</th>' +
+                  '<th>Official Rate (General)</th>' +
+                  '<th>Official Rate (Senior)</th>' +
+                  '<th>Change / Highlight Status</th>' +
+                '</tr>' +
+              '</thead>' +
+              '<tbody>' + rowsHtml + '</tbody>' +
+            '</table>' +
+          '</div>';
+      });
+
+      return (
+        '<div class="bank-card">' +
+          '<div class="bank-header">' +
+            '<h2>' + escapeHtml(bank.Bank) + ' - Fixed Deposit Interest Rates Comparison (ET Money vs Official Website)</h2>' +
+            '<span>Total Separate Rate Tables: ' + tables.length + '</span>' +
+          '</div>' +
+          '<div class="bank-meta-bar">' +
+            '<span>Category: ' + escapeHtml(bank.Category) + '</span>' +
+            '<span>ET Money URL: <a href="' + bank.ETMoneyUrl + '" target="_blank">' + escapeHtml(bank.ETMoneyUrl) + '</a></span>' +
+            '<span>Verified Official Portal: <a href="' + bank.OfficialUrl + '" target="_blank">' + escapeHtml(bank.OfficialUrl) + '</a></span>' +
+          '</div>' +
+          tablesHtml +
+        '</div>'
+      );
+    }
+
+    function selectTab(index) {
+      document.querySelectorAll('.tab-btn').forEach(function(b, i) {
+        b.classList.toggle('active', i === index);
+      });
+      if (index === 0) {
+        contentEl.innerHTML = dataset.map(renderBankCard).join('');
+      } else {
+        contentEl.innerHTML = renderBankCard(dataset[index - 1]);
+      }
+    }
+
+    const allBtn = document.createElement('button');
+    allBtn.className = 'tab-btn active';
+    allBtn.textContent = 'All 20 Banks (Master View)';
+    allBtn.onclick = function() { selectTab(0); };
+    tabsEl.appendChild(allBtn);
+
+    dataset.forEach(function(bank, i) {
+      const btn = document.createElement('button');
+      btn.className = 'tab-btn';
+      const count = (bank.Tables || []).length;
+      btn.textContent = bank.Bank + (count > 1 ? ' (' + count + ' Separate Tables)' : '');
+      btn.onclick = function() { selectTab(i + 1); };
+      tabsEl.appendChild(btn);
+    });
+
+    selectTab(0);
+  </script>
+</body>
+</html>
