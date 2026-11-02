@@ -169,7 +169,7 @@ def main():
         print(f"Error: Dataset not found at {DATASET_PATH}")
         sys.exit(1)
 
-    with open(DATASET_PATH, "r", encoding="utf-8") as f:
+    with open(DATASET_PATH, "r", encoding="utf-8-sig") as f:
         dataset = json.load(f)
 
     stats = calculate_stats(dataset)
