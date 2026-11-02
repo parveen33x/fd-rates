@@ -5,6 +5,8 @@ on:
     # 09:00 AM IST on every Monday (03:30 AM UTC)
     - cron: '30 3 * * 1'
   workflow_dispatch: # Allows manual trigger from GitHub UI anytime
+  push:
+    branches: [ main ]
 
 permissions:
   contents: write

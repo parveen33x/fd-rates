@@ -198,10 +198,12 @@ def main():
             import gspread
             from google.oauth2.service_account import Credentials
 
-            if SA_KEY_ENV.strip().startswith("{"):
-                sa_info = json.loads(SA_KEY_ENV)
+            clean_sa = SA_KEY_ENV.strip().lstrip('\ufeff')
+            if clean_sa.startswith("{"):
+                sa_info = json.loads(clean_sa)
             else:
-                sa_info = json.loads(base64.b64decode(SA_KEY_ENV).decode("utf-8"))
+                raw_bytes = base64.b64decode(clean_sa)
+                sa_info = json.loads(raw_bytes.decode("utf-8-sig"))
 
             scopes = [
                 "https://www.googleapis.com/auth/spreadsheets",
