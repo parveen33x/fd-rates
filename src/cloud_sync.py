@@ -1,23 +1,39 @@
 #!/usr/bin/env python3
 """
-Cloud FD Rate Sync Script for GitHub Actions
-- Runs headless on GitHub's Ubuntu runners.
+Autonomous Cloud FD Rate Sync & Audit Engine for GitHub Actions & Local Execution.
+- Runs headless on GitHub's Ubuntu runners (and Windows locally).
+- Crawls live official bank portals & ET Money tables.
+- Computes rate diffs (Hikes, Cuts, New Slabs, w.e.f dates).
+- Audits SEO & narrative text for contradictions ({currentYear}, peak rate claims).
 - Syncs to Google Sheet via either:
-    1. Google Apps Script Webhook (Easiest - SHEETS_WEBHOOK_URL)
+    1. Google Apps Script Webhook (SHEETS_WEBHOOK_URL)
     2. Google Cloud Service Account (GOOGLE_SERVICE_ACCOUNT_KEY)
-- Sends notifications via Slack Webhook (SLACK_WEBHOOK_URL) and/or Email.
-- Strictly adheres to 'Sheet-First Review' SOP: Never touches Strapi CMS.
+- Sends Slack and/or Email alerts with interactive audit summary.
+- Strictly adheres to 'Sheet-First Review' SOP: Never touches Strapi CMS without human review.
 """
 
 import os
 import sys
 import json
-import base64
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from pathlib import Path
 import requests
+
+# Ensure console supports UTF-8 on Windows
+if hasattr(sys.stdout, 'reconfigure'):
+    sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+if hasattr(sys.stderr, 'reconfigure'):
+    sys.stderr.reconfigure(encoding='utf-8', errors='replace')
+
+# Ensure project root is in sys.path
+ROOT_DIR = Path(__file__).resolve().parent.parent
+if str(ROOT_DIR) not in sys.path:
+    sys.path.insert(0, str(ROOT_DIR))
+
+from src.runner import run_pipeline
+from src.sheets_syncer import SheetsSyncer
 
 SPREADSHEET_ID = os.getenv("SPREADSHEET_ID", "1oeSytWn5llasTaoYlqZp7DiPNA5-_xylB-4hPKAFzEY")
 SHEET_URL = f"https://docs.google.com/spreadsheets/d/{SPREADSHEET_ID}/edit"
@@ -31,65 +47,34 @@ SMTP_USER = os.getenv("SMTP_USER")
 SMTP_PASS = os.getenv("SMTP_PASS")
 NOTIFICATION_EMAIL = os.getenv("NOTIFICATION_EMAIL")
 
-ROOT_DIR = Path(__file__).resolve().parent.parent
-DATASET_PATH = ROOT_DIR / "data" / "fd_multi_table_dataset.json"
 
-def calculate_stats(dataset):
-    hikes = 0
-    cuts = 0
-    new_slabs = 0
-    changed_banks = set()
-    for b in dataset:
-        b_changed = False
-        for tbl in b.get("Tables", []):
-            for r in tbl.get("Rows", []):
-                st = r.get("Status", "")
-                if st == "RATE HIKE":
-                    hikes += 1
-                    b_changed = True
-                elif st == "RATE CUT":
-                    cuts += 1
-                    b_changed = True
-                elif st == "NEW SLAB":
-                    new_slabs += 1
-                    b_changed = True
-        if b_changed:
-            changed_banks.add(b.get("Bank", ""))
-    return {
-        "total_banks": len(dataset),
-        "changed_banks": sorted(list(changed_banks)),
-        "hikes": hikes,
-        "cuts": cuts,
-        "new_slabs": new_slabs
-    }
-
-def send_slack_notification(stats):
+def send_slack_notification(summary):
     if not SLACK_WEBHOOK_URL:
         return
     print("\n[INFO] Sending Slack notification...")
-    changed_str = ", ".join(stats["changed_banks"][:8])
-    if len(stats["changed_banks"]) > 8:
-        changed_str += f" and {len(stats['changed_banks']) - 8} more"
+    changed_str = ", ".join(summary.changed_banks[:8])
+    if len(summary.changed_banks) > 8:
+        changed_str += f" and {len(summary.changed_banks) - 8} more"
 
     payload = {
-        "text": "📊 *Weekly FD Rates Audit Completed*",
+        "text": "Weekly FD Rates Audit Completed",
         "blocks": [
             {
                 "type": "header",
                 "text": {
                     "type": "plain_text",
-                    "text": "📊 Weekly FD Rates Audit Report"
+                    "text": "Weekly FD Rates Audit Report"
                 }
             },
             {
                 "type": "section",
                 "fields": [
-                    {"type": "mrkdwn", "text": f"*Status:* ✅ Google Sheet Updated"},
-                    {"type": "mrkdwn", "text": f"*Banks Monitored:* {stats['total_banks']} Banks & NBFCs"},
-                    {"type": "mrkdwn", "text": f"*Rate Hikes:* 🟢 {stats['hikes']}"},
-                    {"type": "mrkdwn", "text": f"*Rate Cuts:* 🔴 {stats['cuts']}"},
-                    {"type": "mrkdwn", "text": f"*New Slabs:* 🟡 {stats['new_slabs']}"},
-                    {"type": "mrkdwn", "text": f"*Changed Banks:* {len(stats['changed_banks'])}"}
+                    {"type": "mrkdwn", "text": f"*Status:* Google Sheet Updated"},
+                    {"type": "mrkdwn", "text": f"*Banks Monitored:* {summary.total_banks} Banks/NBFCs"},
+                    {"type": "mrkdwn", "text": f"*Rate Hikes:* {summary.total_hikes} [HIKE]"},
+                    {"type": "mrkdwn", "text": f"*Rate Cuts:* {summary.total_cuts} [CUT]"},
+                    {"type": "mrkdwn", "text": f"*New Slabs:* {summary.total_new_slabs} [NEW]"},
+                    {"type": "mrkdwn", "text": f"*Changed Banks:* {len(summary.changed_banks)}"}
                 ]
             },
             {
@@ -104,7 +89,7 @@ def send_slack_notification(stats):
                 "elements": [
                     {
                         "type": "mrkdwn",
-                        "text": "🔒 *SOP Policy:* Strapi CMS has *NOT* been modified. Please review the Google Sheet and reply `done` or `update` to apply changes to Strapi."
+                        "text": "*SOP Policy:* Strapi CMS has *NOT* been modified. Please review the Google Sheet and approve specific banks before syncing to Strapi."
                     }
                 ]
             }
@@ -114,32 +99,34 @@ def send_slack_notification(stats):
         resp = requests.post(SLACK_WEBHOOK_URL, json=payload, timeout=15)
         print(f"Slack response status: {resp.status_code}")
     except Exception as e:
-        print(f"Failed to send Slack alert: {e}")
+        print(f"[WARN] Failed to send Slack alert: {e}")
 
-def send_email_notification(stats):
+
+def send_email_notification(summary):
     if not (SMTP_HOST and SMTP_USER and SMTP_PASS and NOTIFICATION_EMAIL):
         return
     print("\n[INFO] Sending Email notification...")
-    changed_str = ", ".join(stats["changed_banks"])
-    subject = f"📊 Weekly FD Rates Audit: {len(stats['changed_banks'])} Banks with Differences"
+    changed_str = ", ".join(summary.changed_banks)
+    subject = f"Weekly FD Rates Audit: {len(summary.changed_banks)} Banks with Differences"
     body = f"""
 Hello Team,
 
 The autonomous weekly FD Rates Audit has completed.
 
 Audit Summary:
-- Total Banks Monitored : {stats['total_banks']}
-- Banks with Differences: {len(stats['changed_banks'])} ({changed_str})
-- Rate Hikes (Green)    : {stats['hikes']}
-- Rate Cuts (Red)       : {stats['cuts']}
-- New Slabs (Yellow)    : {stats['new_slabs']}
+- Total Banks Monitored : {summary.total_banks}
+- Banks with Differences: {len(summary.changed_banks)} ({changed_str})
+- Rate Hikes            : {summary.total_hikes}
+- Rate Cuts             : {summary.total_cuts}
+- New Slabs             : {summary.total_new_slabs}
+- Contradictions Flagged: {len(summary.contradictions)}
 
 Review Google Sheet:
 {SHEET_URL}
 
 POLICY:
 Strapi CMS has NOT been modified automatically.
-Please review the Google Sheet tabs and reply 'done' or 'update' to publish verified rates.
+Please review the Google Sheet tabs and instruct the agent to publish approved banks.
 
 Best regards,
 Autonomous FD Rate Sync Engine
@@ -158,109 +145,34 @@ Autonomous FD Rate Sync Engine
         server.quit()
         print(f"Email sent successfully to {NOTIFICATION_EMAIL}")
     except Exception as e:
-        print(f"Failed to send Email alert: {e}")
+        print(f"[WARN] Failed to send Email alert: {e}")
+
 
 def main():
-    print("=" * 60)
-    print("   GITHUB ACTIONS: WEEKLY FD RATE SYNC & AUDIT")
-    print("=" * 60)
+    # 1. Run live crawler, diff engine, and content validation
+    banks, summary = run_pipeline(sync_sheets=False)
 
-    if not DATASET_PATH.exists():
-        print(f"Error: Dataset not found at {DATASET_PATH}")
-        sys.exit(1)
+    # 2. Sync to Google Sheet
+    syncer = SheetsSyncer(spreadsheet_id=SPREADSHEET_ID)
+    dataset_dicts = [b.to_dataset_bank() for b in banks]
 
-    with open(DATASET_PATH, "r", encoding="utf-8-sig") as f:
-        dataset = json.load(f)
-
-    stats = calculate_stats(dataset)
-    print(f"Loaded master dataset: {stats['total_banks']} Banks/NBFCs monitored.")
-    print(f"Differences detected in {len(stats['changed_banks'])} banks.")
-
-    # Option 1: Webhook Sync (Zero Google Cloud Console needed)
-    sheet_synced = False
     if WEBHOOK_URL:
-        print(f"\n[INFO] Found SHEETS_WEBHOOK_URL. Syncing to Google Sheet via Webhook...")
-        try:
-            resp = requests.post(WEBHOOK_URL, json={"dataset": dataset}, timeout=60)
-            if resp.status_code == 200:
-                print(f"Webhook response: {resp.text}")
-                print("Successfully updated Google Sheet via Webhook!")
-                sheet_synced = True
-            else:
-                print(f"Webhook error HTTP {resp.status_code}: {resp.text}")
-        except Exception as e:
-            print(f"Failed to post to Webhook: {e}")
-
-    # Option 2: Service Account Sync
+        syncer.sync_via_webhook(WEBHOOK_URL, dataset_dicts)
     elif SA_KEY_ENV:
-        print(f"\n[INFO] Found GOOGLE_SERVICE_ACCOUNT_KEY. Syncing via Service Account...")
-        try:
-            import gspread
-            from google.oauth2.service_account import Credentials
-
-            clean_sa = SA_KEY_ENV.strip().lstrip('\ufeff')
-            if clean_sa.startswith("{"):
-                sa_info = json.loads(clean_sa)
-            else:
-                raw_bytes = base64.b64decode(clean_sa)
-                sa_info = json.loads(raw_bytes.decode("utf-8-sig"))
-
-            scopes = [
-                "https://www.googleapis.com/auth/spreadsheets",
-                "https://www.googleapis.com/auth/drive"
-            ]
-            creds = Credentials.from_service_account_info(sa_info, scopes=scopes)
-            client = gspread.authorize(creds)
-            spreadsheet = client.open_by_key(SPREADSHEET_ID)
-
-            master_rows = [[
-                "Status", "Change Details", "Bank / NBFC Name", "Table Name / Deposit Tier",
-                "ET Money Table Heading", "Official Update Date (w.e.f.)", "Tenure / Scheme",
-                "ET Money General Rate", "ET Money Senior Rate", "Official General Rate",
-                "Official Senior Rate", "Verified Official URL"
-            ]]
-
-            for bank in dataset:
-                b_name = bank.get("Bank", "")
-                for tbl in bank.get("Tables", []):
-                    t_title = tbl.get("TableTitle", "")
-                    etm_upd = tbl.get("ETMoneyUpdated", "")
-                    off_upd = tbl.get("OfficialUpdated", "")
-                    off_link = tbl.get("OfficialLink", "")
-                    for r in tbl.get("Rows", []):
-                        master_rows.append([
-                            r.get("Status", "NO CHANGE"),
-                            r.get("ChangeDetails", ""),
-                            b_name, t_title, etm_upd, off_upd,
-                            r.get("Tenure", ""),
-                            r.get("ETMoneyGen", ""),
-                            r.get("ETMoneySr", ""),
-                            r.get("OfficialGen", ""),
-                            r.get("OfficialSr", ""),
-                            off_link
-                        ])
-
-            ws_master = spreadsheet.worksheet("fd_rates_comparison_2026")
-            ws_master.clear()
-            ws_master.update("A1", master_rows)
-            print(f"Synced Master tab: {len(master_rows)} rows.")
-            sheet_synced = True
-
-        except Exception as e:
-            print(f"Error during Service Account sync: {e}")
-
+        syncer.sync_via_service_account(SA_KEY_ENV, dataset_dicts)
     else:
-        print("\n[NOTE] Neither SHEETS_WEBHOOK_URL nor GOOGLE_SERVICE_ACCOUNT_KEY configured.")
+        print("[INFO] No Google Sheet credentials configured in environment.")
 
-    # Send Notifications if configured
-    send_slack_notification(stats)
-    send_email_notification(stats)
+    # 3. Send alerts
+    send_slack_notification(summary)
+    send_email_notification(summary)
 
-    print("\n" + "=" * 60)
+    print("\n" + "=" * 65)
     print("STAGE 1 CLOUD RUN COMPLETE!")
     print(f">> Google Sheet : {SHEET_URL}")
     print(">> Policy       : Strapi CMS was NOT touched. Ready for human review.")
-    print("=" * 60)
+    print("=" * 65)
+
 
 if __name__ == "__main__":
     main()
