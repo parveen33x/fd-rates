@@ -935,7 +935,7 @@
       {
         "TableTitle": "Table 1: Latest ICICI Bank FD Interest Rates 2026 (Below Rs.3 crore)",
         "ETMoneyUpdated": "Latest ICICI Bank FD Interest Rates 2026 (Below Rs.3 crore)",
-        "OfficialUpdated": "09 November 2026",
+        "OfficialUpdated": "16 November 2026",
         "OfficialLink": "https://www.icici.bank.in/personal-banking/deposits/fixed-deposit/fd-interest-rates#interest-rates-table-all",
         "Rows": [
           {
@@ -1105,7 +1105,7 @@
       {
         "TableTitle": "Table 2: ICICI Bank FD Interest Rates 2026 (Rs.3 - 5 crore) (With Premature Withdrawal)",
         "ETMoneyUpdated": "ICICI Bank FD Interest Rates 2026 (Rs.3 - 5 crore) (With Premature Withdrawal)",
-        "OfficialUpdated": "09 November 2026",
+        "OfficialUpdated": "16 November 2026",
         "OfficialLink": "https://www.icici.bank.in/personal-banking/deposits/fixed-deposit/fd-interest-rates#interest-rates-table-all",
         "Rows": [
           {
@@ -2257,11 +2257,20 @@
             "ChangeDetails": "In Sync"
           },
           {
-            "Tenure": "91 days to 180 days",
+            "Tenure": "91 days to 120 days",
             "ETM_Gen": "5.00%",
             "ETM_Sr": "5.50%",
-            "Off_Gen": "--",
-            "Off_Sr": "--",
+            "Off_Gen": "5.00%",
+            "Off_Sr": "5.50%",
+            "Status": "IN_SYNC",
+            "ChangeDetails": "In Sync"
+          },
+          {
+            "Tenure": "121 days to 179 days",
+            "ETM_Gen": "5.00%",
+            "ETM_Sr": "5.50%",
+            "Off_Gen": "5.00%",
+            "Off_Sr": "5.50%",
             "Status": "IN_SYNC",
             "ChangeDetails": "In Sync"
           },
@@ -2275,11 +2284,20 @@
             "ChangeDetails": "In Sync"
           },
           {
-            "Tenure": "181 days to 269 days",
+            "Tenure": "181 days to 210 days",
+            "ETM_Gen": "5.75%",
+            "ETM_Sr": "6.25%",
+            "Off_Gen": "5.75%",
+            "Off_Sr": "6.25%",
+            "Status": "IN_SYNC",
+            "ChangeDetails": "In Sync"
+          },
+          {
+            "Tenure": "211 days to 269 days",
             "ETM_Gen": "6.00%",
             "ETM_Sr": "6.50%",
-            "Off_Gen": "--",
-            "Off_Sr": "--",
+            "Off_Gen": "6.00%",
+            "Off_Sr": "6.50%",
             "Status": "IN_SYNC",
             "ChangeDetails": "In Sync"
           },
@@ -2302,7 +2320,16 @@
             "ChangeDetails": "In Sync"
           },
           {
-            "Tenure": "1 Year 6 Months to < 2 Years",
+            "Tenure": "1 Year 6 Months to < 1 Year 7 Months",
+            "ETM_Gen": "6.90%",
+            "ETM_Sr": "7.40%",
+            "Off_Gen": "6.90%",
+            "Off_Sr": "7.40%",
+            "Status": "IN_SYNC",
+            "ChangeDetails": "In Sync"
+          },
+          {
+            "Tenure": "1 Year 7 Months to < 2 Years",
             "ETM_Gen": "6.90%",
             "ETM_Sr": "7.40%",
             "Off_Gen": "6.90%",
@@ -2330,12 +2357,12 @@
           },
           {
             "Tenure": "61 Months and above",
-            "ETM_Gen": "6.65%",
-            "ETM_Sr": "7.15%",
+            "ETM_Gen": "6.50%",
+            "ETM_Sr": "7.00%",
             "Off_Gen": "6.50%",
             "Off_Sr": "7.00%",
-            "Status": "RATE_CUT",
-            "ChangeDetails": "Rate Cut (Gen: -0.15%, Sr: -0.15%)"
+            "Status": "IN_SYNC",
+            "ChangeDetails": "In Sync"
           },
           {
             "Tenure": "Tax Saver (5 years)",
@@ -2345,51 +2372,6 @@
             "Off_Sr": "7.15%",
             "Status": "IN_SYNC",
             "ChangeDetails": "In Sync"
-          },
-          {
-            "Tenure": "91 days to 120 days",
-            "ETM_Gen": "--",
-            "ETM_Sr": "--",
-            "Off_Gen": "5.00%",
-            "Off_Sr": "5.50%",
-            "Status": "NEW_SLAB",
-            "ChangeDetails": "New Official Tenure Slab"
-          },
-          {
-            "Tenure": "121 days to 179 days",
-            "ETM_Gen": "--",
-            "ETM_Sr": "--",
-            "Off_Gen": "5.00%",
-            "Off_Sr": "5.50%",
-            "Status": "NEW_SLAB",
-            "ChangeDetails": "New Official Tenure Slab"
-          },
-          {
-            "Tenure": "181 days to 210 days",
-            "ETM_Gen": "--",
-            "ETM_Sr": "--",
-            "Off_Gen": "5.75%",
-            "Off_Sr": "6.25%",
-            "Status": "NEW_SLAB",
-            "ChangeDetails": "New Official Tenure Slab"
-          },
-          {
-            "Tenure": "211 days to 269 days",
-            "ETM_Gen": "--",
-            "ETM_Sr": "--",
-            "Off_Gen": "6.00%",
-            "Off_Sr": "6.50%",
-            "Status": "NEW_SLAB",
-            "ChangeDetails": "New Official Tenure Slab"
-          },
-          {
-            "Tenure": "1 Year 7 months to below 2 Years",
-            "ETM_Gen": "--",
-            "ETM_Sr": "--",
-            "Off_Gen": "6.90%",
-            "Off_Sr": "7.40%",
-            "Status": "NEW_SLAB",
-            "ChangeDetails": "New Official Tenure Slab"
           }
         ]
       }
