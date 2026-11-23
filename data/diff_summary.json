@@ -1,16 +1,17 @@
 {
-  "generated_at": "2026-11-16T11:52:27.072372+00:00",
+  "generated_at": "2026-11-23T13:26:16.749453+00:00",
   "total_banks": 19,
   "changed_banks": [
     "HDFC Bank",
     "ICICI Bank",
+    "IDBI Bank",
     "IDFC FIRST Bank",
     "IndusInd Bank",
     "Punjab National Bank"
   ],
   "total_hikes": 37,
   "total_cuts": 15,
-  "total_new_slabs": 42,
+  "total_new_slabs": 48,
   "contradictions": [
     {
       "bank_name": "SBI Bank",
@@ -81,7 +82,7 @@
       "field_name": "description",
       "issue_type": "PEAK_RATE_MISMATCH",
       "detected_value": "7.75%",
-      "expected_value": "7.05%",
+      "expected_value": "9.8%",
       "snippet": "...t in IDBI Bank Fixed Deposits with interest rates up to 7.75% p.a...."
     },
     {

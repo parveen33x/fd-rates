@@ -935,7 +935,7 @@
       {
         "TableTitle": "Table 1: Latest ICICI Bank FD Interest Rates 2026 (Below Rs.3 crore)",
         "ETMoneyUpdated": "Latest ICICI Bank FD Interest Rates 2026 (Below Rs.3 crore)",
-        "OfficialUpdated": "16 November 2026",
+        "OfficialUpdated": "23 November 2026",
         "OfficialLink": "https://www.icici.bank.in/personal-banking/deposits/fixed-deposit/fd-interest-rates#interest-rates-table-all",
         "Rows": [
           {
@@ -1105,7 +1105,7 @@
       {
         "TableTitle": "Table 2: ICICI Bank FD Interest Rates 2026 (Rs.3 - 5 crore) (With Premature Withdrawal)",
         "ETMoneyUpdated": "ICICI Bank FD Interest Rates 2026 (Rs.3 - 5 crore) (With Premature Withdrawal)",
-        "OfficialUpdated": "16 November 2026",
+        "OfficialUpdated": "23 November 2026",
         "OfficialLink": "https://www.icici.bank.in/personal-banking/deposits/fixed-deposit/fd-interest-rates#interest-rates-table-all",
         "Rows": [
           {
@@ -2977,7 +2977,7 @@
       {
         "TableTitle": "Table 1: IDBI Bank FD Interest Rates 2026 (Below Rs. 3 crore)",
         "ETMoneyUpdated": "IDBI Bank FD Interest Rates 2026 (Below Rs. 3 crore)",
-        "OfficialUpdated": "",
+        "OfficialUpdated": "12-11-2026",
         "OfficialLink": "https://www.idbi.bank.in/interest-rates.aspx",
         "Rows": [
           {
@@ -3132,6 +3132,60 @@
             "Off_Sr": "--",
             "Status": "IN_SYNC",
             "ChangeDetails": "In Sync"
+          },
+          {
+            "Tenure": "One Month MCLR (1M)",
+            "ETM_Gen": "--",
+            "ETM_Sr": "--",
+            "Off_Gen": "8.20%",
+            "Off_Sr": "--",
+            "Status": "NEW_SLAB",
+            "ChangeDetails": "New Official Tenure Slab"
+          },
+          {
+            "Tenure": "Three Month MCLR (Q)",
+            "ETM_Gen": "--",
+            "ETM_Sr": "--",
+            "Off_Gen": "8.55%",
+            "Off_Sr": "--",
+            "Status": "NEW_SLAB",
+            "ChangeDetails": "New Official Tenure Slab"
+          },
+          {
+            "Tenure": "Six Month MCLR (HY)",
+            "ETM_Gen": "--",
+            "ETM_Sr": "--",
+            "Off_Gen": "8.75%",
+            "Off_Sr": "--",
+            "Status": "NEW_SLAB",
+            "ChangeDetails": "New Official Tenure Slab"
+          },
+          {
+            "Tenure": "One year MCLR (Y)",
+            "ETM_Gen": "--",
+            "ETM_Sr": "--",
+            "Off_Gen": "8.80%",
+            "Off_Sr": "--",
+            "Status": "NEW_SLAB",
+            "ChangeDetails": "New Official Tenure Slab"
+          },
+          {
+            "Tenure": "Two Year MCLR (2Y)",
+            "ETM_Gen": "--",
+            "ETM_Sr": "--",
+            "Off_Gen": "9.40%",
+            "Off_Sr": "--",
+            "Status": "NEW_SLAB",
+            "ChangeDetails": "New Official Tenure Slab"
+          },
+          {
+            "Tenure": "Three Year MCLR (3Y)",
+            "ETM_Gen": "--",
+            "ETM_Sr": "--",
+            "Off_Gen": "9.80%",
+            "Off_Sr": "--",
+            "Status": "NEW_SLAB",
+            "ChangeDetails": "New Official Tenure Slab"
           }
         ]
       }
